@@ -14,7 +14,6 @@ import io
 from PIL import Image
 import pyrebase
 
-st.set_option('browser.gatherUsageStats', False)
 admin_cred = credentials.Certificate('Firebase Admin SDK.json')
 #firebase_admin.initialize_app(admin_cred)
 
