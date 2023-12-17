@@ -39,10 +39,19 @@ firebaseConfig = {
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly', 'https://www.googleapis.com/auth/drive']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive',]
 creds = Credentials.from_service_account_file('service_credentials.json', scopes=SCOPES)
 sheets_service = build('sheets', 'v4', credentials=creds)
 drive_service = build('drive', 'v3', credentials=creds)
+
+def update_sheet_cell(service, spreadsheet_id, range_name, value):
+    body = {
+        'values': [[value]]
+    }
+    result = service.spreadsheets().values().update(
+        spreadsheetId=spreadsheet_id, range=range_name,
+        valueInputOption='USER_ENTERED', body=body).execute()
+    return result
 
 def download_drive_file(service, file_id, save_path):
         request = service.files().get_media(fileId=file_id)
@@ -53,6 +62,7 @@ def download_drive_file(service, file_id, save_path):
             while done is False:
                 status, done = downloader.next_chunk()
 def main():
+    
     st.title("Peace of Pi: PDF Merger")
     default_sheet = "Practice Test Analysis!C2:C40"
     range_name = st.text_input("Enter the name of the sheet and the range of cells you want to download:"
@@ -61,8 +71,15 @@ def main():
     range_name = range_name.upper()
     spreadsheet_url = st.text_input("Enter the URL of the spreadsheet:"
                                     ,value = default_URL)
-    
     spreadsheet_id = spreadsheet_url.split('/')[-2]
+    #---------------Sidebar----------------#
+    with st.sidebar:
+        student_name = st.text_input("Enter student name:")
+        if student_name:
+            if st.button("Update Cell"):
+                if update_sheet_cell(sheets_service, spreadsheet_id, "Dashboard!A1", student_name):
+                    st.success("Cell updated successfully!")
+
 
     practice_tests = ["Ptest #1 (202003U)","Ptest #2 (202012A)","Ptest #3 (202010A)",
                     "Ptest #4 (202011U)","Ptest #5 (202012U)","Ptest #6 (202009U)",
