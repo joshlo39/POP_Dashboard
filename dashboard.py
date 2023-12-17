@@ -14,6 +14,13 @@ import io
 from PIL import Image
 import pyrebase
 
+
+#------------Configuring Streamlit--------#
+st.set_page_config(
+    page_title='POP Dashboard',  # Your app title
+    page_icon='Pop Icon.ico'  # Path to your favicon
+)
+#------------Authentication--------------#
 admin_cred = credentials.Certificate('Firebase Admin SDK.json')
 #firebase_admin.initialize_app(admin_cred)
 
