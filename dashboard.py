@@ -145,10 +145,7 @@ def main():
             try:
                 if 'drive.google.com' in url:
                     file_id = url.split('/')[-2]
-                    print(url)
-                    print(file_id)
                     file_path = os.path.join(save_dir, f'image_{idx}.png')
-                
                     download_drive_file(drive_service, file_id, file_path)
                 else:
                     print(f"Failed to download or invalid content type for URL: {url}")
@@ -159,11 +156,15 @@ def main():
         images = []
         
         #Convert images to pdf
-        for filename in os.listdir(save_dir):
+        file_names = sorted(os.listdir(save_dir))
+        print(file_names)
+        for filename in (file_names):
             if filename.endswith(".png"):
                 filepath = os.path.join(save_dir, filename)
                 image = (Image.open(filepath))
                 images.append(image.convert('RGB'))
+                
+        
 
         pdf_path = os.path.join(save_dir,'merged.pdf')
         if len(images) > 0:
