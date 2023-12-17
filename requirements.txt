@@ -1,0 +1,9 @@
+streamlit
+gspread
+requests
+firebase-admin
+google-api-python-client
+google-auth
+Pillow
+pyrebase
+streamlit-authenticator

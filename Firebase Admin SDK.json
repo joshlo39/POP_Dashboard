@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "streamlit-pop-pdfmerger",
+  "private_key_id": "54764e9275992838ddefdc1f03531f547d18ca49",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCj7lbfiPwgV0qn\nbE2oX6l83RJKx35o1KOU4wKN6PIemW0dGaLGi1sV+74hgAcFIZAx4db8CF9K99Kj\nKKuulITQIZKp4fGHoeDTdOy6QAw65c6m1OezQHAzCO/HKK/+ZGQUW42LfZwhEATo\noS9zRGotel3s8IVomePUKdlkF4oNozQGx5DRwTTC9PjprZB+ExQPZdWNtsCynxsr\nQFsCENPdHARk18sFxn0LwqYIECx6tbBFfH19NVnLkIOUlf7bjeVQ+DDQb33Dhblq\n6Nw+efwx2ok19Xr3AWtvyCI1Fn8ynexj4/5sOiNC2/PaFg47rl8tOYPvbuiKjm29\n1PwFNtihAgMBAAECggEAD855DSMsP5urIYTNe1RROpTzOpRAM0ngxaGaxKXKRfqm\n2fN3p1h9XYIUmmGGsijDIP9ht2BafLDaQpk27j9FclW9l1vatvVI55rFzxlCrjss\nBEu37tsu9mMzzsROYMnu5hE3dYfH3vhCDbXdDJ3Zwkc8rA5uqEaOZtq4kQokAzeq\ncg3BJr3hEmWvvrfNHAcX8hpGCnPVDonqu+LsYPh+T6FMN9qxDm6tYjHg8obgQ9sA\nSz8cwqnwoHGxgFe02p5fbM1ceVp3F6h+ZKTYiRA3OjEw/INRxiFjtUbvr0GHYOVX\ntdRaQC9msS7OiJ1WqDdztSqCxGcsdLPCrDKjfNJD8QKBgQDik5Ow+ME3oCpP0bkx\nmMFCKmZ1b82+n4klqKusZmbYnFFxWGFtay0RV0txOqhwHYe722g6nhZdrUW+NpUO\n1rq6v7qUpTlEn+DQsdq+bqpVUQtotjXOvtnAi/0TQepWFrx1TTaV6a0nad8jMOKM\nnF8tFoOBDoiyZCaoXICTUjbGVwKBgQC5OCUgxoiZ2v2mjJ0RQBbmr2ZuSFrp7k9/\noTSDaTMy1G5PyRAkhKtJHxbbLLIAcTSoSpn7LOQPsbEzzMtIymPa8GUAEtF6OmE4\nb4yw+CFPqi7Ea5w4wGeRmZD5gOGLkSPpbeNNKtEnQJJD5iK3Kf/9oCplL+Yk8h7g\nLywKN0nNxwKBgQDDaNf1x3SMzvvu/0ejeMUklYDsQ9LEVr9n1ULKWz7UDm1HPhw4\nzDiAPjN4okhm+XD5Gc+YzoMno6sE0/pWY+eD7Ju0W5M6llDEbL/lgXgyQMWAN7XM\na1lN8O4BT9YVDWLYIBG11WVbGroxlZWuA6cqMcKU6b4HbMzSY4UYic1n3QKBgAG3\nKmjeTd+W7qh/Puks/clPMJSu6OCny2a0OIdLDyVWYFsu0o50CB4aQpzvEgr9AW7Z\nmgmAhfA7RhfjurJG5ZvehCD3C6elKMdcCSKOeciCHALHuF+yMINht70H247uXjXI\nRcWuMte5OmGUnRezNOLFe/8J7YjEEVMkPLUvg+h7AoGATMcJpxswZ6yJFJ0nNe/J\n94Q/u6R0yH54pP8yAkRi70NRnoP3qpGt+FHPw41lPaH1ze3TrMBPcunKgGOsFv/C\nqDlG0TxF0HzMLl+52CmOJAkdbaI1GbyI1Dtnvnxiwv7V3lknxy2YSzouZ6RNtTzh\nPQriVTjUWNg7OfFADz0w1xM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-nollk@streamlit-pop-pdfmerger.iam.gserviceaccount.com",
+  "client_id": "103472598221734990359",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-nollk%40streamlit-pop-pdfmerger.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
