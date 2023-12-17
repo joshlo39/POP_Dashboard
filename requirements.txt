@@ -7,3 +7,4 @@ google-auth
 Pillow
 pyrebase
 streamlit-authenticator
+inotify
