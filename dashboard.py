@@ -130,55 +130,55 @@ def main():
                 idx += 1
                 
                 
-        # save_dir = 'downloaded_pngs'
-        # os.makedirs(save_dir, exist_ok=True)
+        save_dir = 'downloaded_pngs'
+        os.makedirs(save_dir, exist_ok=True)
         
-        # # Download images
-        # for idx, url in enumerate(hyperlinks):
-        #     try:
-        #         if 'drive.google.com' in url:
-        #             file_id = url.split('/')[-2]
-        #             print(url)
-        #             print(file_id)
-        #             file_path = os.path.join(save_dir, f'image_{idx}.png')
+        # Download images
+        for idx, url in enumerate(hyperlinks):
+            try:
+                if 'drive.google.com' in url:
+                    file_id = url.split('/')[-2]
+                    print(url)
+                    print(file_id)
+                    file_path = os.path.join(save_dir, f'image_{idx}.png')
                 
-        #             download_drive_file(drive_service, file_id, file_path)
-        #         else:
-        #             print(f"Failed to download or invalid content type for URL: {url}")
-        #     except Exception as e:
-        #         print(f"Request failed for URL {url}: {e}")
+                    download_drive_file(drive_service, file_id, file_path)
+                else:
+                    print(f"Failed to download or invalid content type for URL: {url}")
+            except Exception as e:
+                print(f"Request failed for URL {url}: {e}")
                 
         
-        # images = []
+        images = []
         
-        # #Convert images to pdf
-        # for filename in os.listdir(save_dir):
-        #     if filename.endswith(".png"):
-        #         filepath = os.path.join(save_dir, filename)
-        #         image = (Image.open(filepath))
-        #         images.append(image.convert('RGB'))
+        #Convert images to pdf
+        for filename in os.listdir(save_dir):
+            if filename.endswith(".png"):
+                filepath = os.path.join(save_dir, filename)
+                image = (Image.open(filepath))
+                images.append(image.convert('RGB'))
 
-        # pdf_path = os.path.join(save_dir,'merged.pdf')
-        # if len(images) > 0:
-        #     images[0].save(pdf_path, save_all=True, append_images=images[1:])
-        # else:
-        #     st.error("No images to merge")
+        pdf_path = os.path.join(save_dir,'merged.pdf')
+        if len(images) > 0:
+            images[0].save(pdf_path, save_all=True, append_images=images[1:])
+        else:
+            st.error("No images to merge")
 
-        # # Delete images from folder
-        # for filename in os.listdir(save_dir):
-        #     if filename.endswith(".png"):
-        #         os.remove(os.path.join(save_dir, filename))
-        # pdf_path = 'downloaded_pngs/merged.pdf'
+        # Delete images from folder
+        for filename in os.listdir(save_dir):
+            if filename.endswith(".png"):
+                os.remove(os.path.join(save_dir, filename))
+        pdf_path = 'downloaded_pngs/merged.pdf'
         
-        # #open pdf for user to download
-        # if os.path.exists(pdf_path):
-        #     with open(pdf_path, 'rb') as f:
-        #         btn = st.download_button(
-        #             label = "Merged PDF",
-        #             data = f,
-        #             file_name = 'merged.pdf',
-        #             mime = 'application/octet-stream'
-        #         )
+        #open pdf for user to download
+        if os.path.exists(pdf_path):
+            with open(pdf_path, 'rb') as f:
+                btn = st.download_button(
+                    label = "Merged PDF",
+                    data = f,
+                    file_name = 'merged.pdf',
+                    mime = 'application/octet-stream'
+                )
                 
     
 
