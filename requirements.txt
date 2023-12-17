@@ -7,3 +7,8 @@ google-auth
 Pillow
 pyrebase
 streamlit-authenticator
+sys
+os
+googleapiclient.discovery
+google.oauth2.service_account
+googleapiclient.http
