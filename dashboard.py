@@ -98,15 +98,14 @@ def main():
         #GET Calls to Google Sheets API
         download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
         filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
-        print(f"FILTERED_DATASET: {filtered_dataset}")
+
         #store the values into individual array
         category_values = filtered_dataset['valueRanges'][0]['values']
         difficulty_values = filtered_dataset['valueRanges'][1]['values']
         section_values = filtered_dataset['valueRanges'][2]['values']
         correctness_values = filtered_dataset['valueRanges'][3]['values']
         test_values = filtered_dataset['valueRanges'][4]['values']
-        print(f"CATEGORY_VALUES: {category_values}")
-        print(f"DIFFICULTY_VALUES: {difficulty_values}")
+
         # Flags to check if filters are active
         is_category_filter = len(selected_category) > 0
         is_difficulty_filter = len(selected_difficulty) > 0
