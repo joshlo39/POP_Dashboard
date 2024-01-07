@@ -13,22 +13,22 @@ from googleapiclient.http import MediaIoBaseDownload
 import io
 from PIL import Image
 import pyrebase
-from pypdf import PdfReader, PdfWriter
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-def create_pdf_with_hyperlink_test(file_path, url, text, x, y):
-    can = canvas.Canvas(file_path, pagesize=letter)
-    can.drawString(x, y, text)
-    can.linkURL(url, (x, y, x + 100, y + 10), relative=1)
-    can.save()
+# from pypdf import PdfReader, PdfWriter
+# from reportlab.pdfgen import canvas
+# from reportlab.lib.pagesizes import letter
+# def create_pdf_with_hyperlink_test(file_path, url, text, x, y):
+#     can = canvas.Canvas(file_path, pagesize=letter)
+#     can.drawString(x, y, text)
+#     can.linkURL(url, (x, y, x + 100, y + 10), relative=1)
+#     can.save()
 
-def add_hyperlink_to_pdf(input_pdf_path, output_pdf_path, url, text, x, y, page_number):
-    # Create a new PDF with the hyperlink
-    packet = io.BytesIO()
-    can = canvas.Canvas(packet, pagesize=letter)
-    can.drawString(x, y, text)
-    can.linkURL(url, (x, y, x + 100, y + 10), relative=1)
-    can.save()
+# def add_hyperlink_to_pdf(input_pdf_path, output_pdf_path, url, text, x, y, page_number):
+#     # Create a new PDF with the hyperlink
+#     packet = io.BytesIO()
+#     can = canvas.Canvas(packet, pagesize=letter)
+#     can.drawString(x, y, text)
+#     can.linkURL(url, (x, y, x + 100, y + 10), relative=1)
+#     can.save()
 
     # # Move to the beginning of the StringIO buffer
     # packet.seek(0)
