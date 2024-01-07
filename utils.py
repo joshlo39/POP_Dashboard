@@ -47,8 +47,8 @@ import pyrebase
     #     writer.add_page(page)
 
     # Write the output PDF
-    with open(output_pdf_path, "wb") as output_file:
-        writer.write(output_file)
+    # with open(output_pdf_path, "wb") as output_file:
+    #     writer.write(output_file)
 def update_sheet_cell(service, spreadsheet_id, range_name, value):
     body = {
         'values': [[value]]
