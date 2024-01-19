@@ -46,7 +46,7 @@ def pdf_merger():
     default_sheet = "Practice Exam Analysis!C218:C280"
     range_name = st.text_input("Enter the name of the sheet and the range of cells you want to download:"
                             ,value = default_sheet)
-    default_URL = "https://docs.google.com/spreadsheets/d/1xilt_O28-BD4uSiXxIuOvczkDED04F2MIQK-imtpc48/edit#gid=0"
+    default_URL = "https://docs.google.com/spreadsheets/d/1RjkWwLxLb9dk8OjNYY6CwxTw4NXOaTO955qKuslNgBE/edit#gid=0"
     range_name = range_name.upper()
     spreadsheet_url = st.text_input("Enter the URL of the spreadsheet:"
                                     ,value = default_URL)
@@ -101,10 +101,11 @@ def pdf_merger():
     section_range = sheet_name + "!" + "B" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "B" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     correctness_range = sheet_name + "!" + "D" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "D" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     test_range = sheet_name + "!" + "A" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "A" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
-    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range]
+    solutions_range = sheet_name + "!" + "F" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "F" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
+    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range]
 
     
-    category = ["HOA","PSDA","PAM","GEOM"]
+    category = ["HOA","PSDA","PAM","GEOM","Vocab","Big Picture","Reading for Function","Literal Comprehension","Text Completion","Supporting Evidence", "Graphs and Charts","Comma Uses and Misuses","Subject-verb agreement","Combining and Separating Sentences","Essential and Non-essential clauses","Transitions","Plain Text"]
     difficulty = ["1","2","3","4","5"]
     correctness = {
         "Correct":"1",
@@ -126,6 +127,7 @@ def pdf_merger():
         #GET Calls to Google Sheets API
         download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
         filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
+        solutions_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=solutions_range, includeGridData=True).execute()
 
         #store the values into individual array
         category_values = filtered_dataset['valueRanges'][0]['values']
@@ -133,6 +135,7 @@ def pdf_merger():
         section_values = filtered_dataset['valueRanges'][2]['values']
         correctness_values = filtered_dataset['valueRanges'][3]['values']
         test_values = filtered_dataset['valueRanges'][4]['values']
+        solutions_values = filtered_dataset['valueRanges'][5]['values']
 
         # Flags to check if filters are active
         is_category_filter = len(selected_category) > 0
@@ -141,6 +144,14 @@ def pdf_merger():
         is_correctness_filter = len(selected_correctness) > 0
         is_test_filter = len(selected_tests) > 0
         
+        video_hyperlinks = []
+        for number_of_rows, row in enumerate(download_result['sheets'][0]['data'][0]['rowData']):
+            for num_of_row_values, cell in enumerate((row['values'])):
+                # Check if cell meets all active filters
+                #the logic is if the filter is not active then reurns true for that particular filter
+                    if 'hyperlink' in cell:
+                        video_hyperlinks.append(cell['hyperlink'])     
+        print(video_hyperlinks) 
         
         idx = 0 # Index of the current cell
         for number_of_rows, row in enumerate(download_result['sheets'][0]['data'][0]['rowData']):
@@ -180,7 +191,6 @@ def pdf_merger():
         file_names = os.listdir(save_dir)
         file_names.remove('merged.pdf') 
         file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
-        print(f"file_names: {file_names}")
         for filename in (file_names):
             if filename.endswith(".png"):
                 filepath = os.path.join(save_dir, filename)
@@ -215,7 +225,6 @@ def pdf_merger():
     if st.button("Generate Solutions"):
         hyperlinks = []
         #GET Calls to Google Sheets API
-        solutions_range = sheet_name + "!" + "F" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "F" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
 
                     
        
