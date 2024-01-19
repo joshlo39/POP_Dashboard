@@ -91,7 +91,8 @@ def pdf_merger():
                     "Ptest #11 (201912U)","Ptest #12 (202009A)","Ptest #13 (202008A)","Ptest #14 (201911U)",
                     "Ptest #15 (202105U)","Ptest #16 (201905U)","Ptest #17 (201910U)","Ptest #18 (201905A)",
                     "Ptest #19 (201903U)","Ptest #20 (202105A)","Ptest #21 (202306U)","Ptest #22 (202304SD)",
-                      "Ptest #23 (202305U)","D Practice Test #1", "D Practice Test #2", "D Practice Test #3"]
+                      "Ptest #23 (202305U)","D Practice Test #1", "D Practice Test #2", "D Practice Test #3",
+                      "NL Practice Test #1","NL Practice Test #2","NL Practice Test #3","NL Practice Test #4"]
     
 
     sheet_name = range_name.split("!")[0]
@@ -136,7 +137,8 @@ def pdf_merger():
         correctness_values = filtered_dataset['valueRanges'][3]['values']
         test_values = filtered_dataset['valueRanges'][4]['values']
         solutions_values = filtered_dataset['valueRanges'][5]['values']
-
+        
+        print(category_values)
         # Flags to check if filters are active
         is_category_filter = len(selected_category) > 0
         is_difficulty_filter = len(selected_difficulty) > 0
@@ -151,7 +153,6 @@ def pdf_merger():
                 #the logic is if the filter is not active then reurns true for that particular filter
                     if 'hyperlink' in cell:
                         video_hyperlinks.append(cell['hyperlink'])     
-        print(video_hyperlinks) 
         
         idx = 0 # Index of the current cell
         for number_of_rows, row in enumerate(download_result['sheets'][0]['data'][0]['rowData']):
