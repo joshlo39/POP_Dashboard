@@ -13,42 +13,13 @@ from googleapiclient.http import MediaIoBaseDownload
 import io
 from PIL import Image
 import pyrebase
-# from pypdf import PdfReader, PdfWriter
-# from reportlab.pdfgen import canvas
-# from reportlab.lib.pagesizes import letter
-# def create_pdf_with_hyperlink_test(file_path, url, text, x, y):
-#     can = canvas.Canvas(file_path, pagesize=letter)
-#     can.drawString(x, y, text)
-#     can.linkURL(url, (x, y, x + 100, y + 10), relative=1)
-#     can.save()
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from PyPDF2 import PdfReader, PdfWriter
+from reportlab.lib.colors import blue
 
-# def add_hyperlink_to_pdf(input_pdf_path, output_pdf_path, url, text, x, y, page_number):
-#     # Create a new PDF with the hyperlink
-#     packet = io.BytesIO()
-#     can = canvas.Canvas(packet, pagesize=letter)
-#     can.drawString(x, y, text)
-#     can.linkURL(url, (x, y, x + 100, y + 10), relative=1)
-#     can.save()
 
-    # # Move to the beginning of the StringIO buffer
-    # packet.seek(0)
-    # new_pdf = PdfReader(packet)
-    #
-    # # Read the existing PDF
-    # existing_pdf = PdfReader(input_pdf_path)
-    # writer = PdfWriter()
-    #
-    # # Add all pages from the existing PDF
-    # for i, page in enumerate(existing_pdf.pages):
-    #     with open("page.pdf", "wb") as f:
-    #         writer.write(f)
-    #     if i == page_number:
-    #         page.merge_page(new_pdf.pages[0])
-    #     writer.add_page(page)
 
-    # Write the output PDF
-    # with open(output_pdf_path, "wb") as output_file:
-    #     writer.write(output_file)
 def update_sheet_cell(service, spreadsheet_id, range_name, value):
     body = {
         'values': [[value]]
@@ -69,4 +40,95 @@ def download_drive_file(service, file_id, save_path):
 def smart_sort(arr):
     arr.sort(key=lambda x: int(x.split('-')[0]))
     return arr
+
+def create_hyperlink_pdf(output_pdf_path, hyperlinks, link_text_positions):
+    c = canvas.Canvas(output_pdf_path, pagesize=letter)
+
+    for link, position in zip(hyperlinks, link_text_positions):
+        x, y = position
+        c.setFillColorRGB(0, 0, 1)  # Blue color for hyperlink text
+        c.drawString(x, y, "Video Link")  # Example text
+        c.linkURL(url=link, rect=(x, y, x + 100, y + 10), relative=1)
+
+    c.save()
+    
+def create_pdf_with_2x2_images_hyperlinks(output_pdf_path, image_details, max_image_width=350, max_image_height=350):
+    c = canvas.Canvas(output_pdf_path, pagesize=letter)
+    page_width, page_height = letter
+    print(f"page_width: {page_width}, page_height: {page_height}")
+
+    for page_idx, page_content in enumerate(image_details):
+        for image_idx, (image_path, hyperlink) in enumerate(page_content):
+            # Calculate image position
+            x = (page_width / 2) * (image_idx % 2)
+            y = (page_height / 2) * (1 - (image_idx // 2))
+
+            # Open and resize the image
+            img = Image.open(image_path)
+            img_width, img_height = img.size
+    
+            scale = min(max_image_width / img_width,max_image_height / img_height)
+            img_width *= scale
+            img_height *= scale
+
+            # Adjust position to center the image in its quadrant
+            x += (max_image_width - img_width) / 2
+            y += (max_image_height - img_height) / 2
+
+            # Add the image
+            c.drawImage(image_path, x, y, width=img_width, height=img_height)
+
+            # Add the hyperlink
+            link_text, link_url = hyperlink
+            text = c.beginText(x, y - 20)  # Adjust the y-coordinate for hyperlink position
+            text.setFont("Helvetica", 12)
+            text.setFillColor(blue)
+            text.textLine(link_text)
+            c.drawText(text)
+            c.linkURL(link_url, (x, y - 20, x + 100, y), relative=1)
+
+        # Create a new page if not the last page
+        if page_idx < len(image_details) - 1:
+            c.showPage()
+
+    c.save()
+    
+
+def merge_pdfs(base_pdf_path, overlay_pdf_path, output_pdf_path):
+    # Open the base PDF
+    base_pdf = PdfReader(open(base_pdf_path, "rb"))
+
+    # Open the overlay PDF with hyperlinks
+    overlay_pdf = PdfReader(open(overlay_pdf_path, "rb"))
+
+    # Create a PDF writer
+    writer = PdfWriter()
+
+    # Iterate through the base PDF pages and merge with overlay
+    for i in range(len(base_pdf.pages)):
+        page = base_pdf.pages[i]
+
+        if i < len(overlay_pdf.pages):
+            print("IM IN THIS BITCH")
+            page.merge_page(overlay_pdf.pages[i])
+
+        writer.add_page(page)
+
+    # Write out the merged PDF
+    with open(output_pdf_path, "wb") as f:
+        writer.write(f)
+        
+def draw_grid(canvas, page_width, page_height, interval=50):
+    canvas.setStrokeColorRGB(0.5, 0.5, 0.5)  # Grey color for the grid lines
+    canvas.setLineWidth(1)
+
+    # Draw horizontal lines
+    for y in range(0, int(page_height), interval):
+        canvas.line(0, y, page_width, y)
+        canvas.drawString(5, y, str(y))
+
+    # Draw vertical lines
+    for x in range(0, int(page_width), interval):
+        canvas.line(x, 0, x, page_height)
+        canvas.drawString(x, 5, str(x))
 

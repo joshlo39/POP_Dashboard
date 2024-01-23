@@ -13,6 +13,7 @@ from googleapiclient.http import MediaIoBaseDownload
 import io
 from PIL import Image
 import pyrebase
+from reportlab.lib.pagesizes import letter 
 from utils import * 
  
 def pdf_merger():
@@ -43,7 +44,7 @@ def pdf_merger():
 
     #------------Configuring Streamlit--------#
     st.title("Peace of Pi: PDF Merger")
-    default_sheet = "Practice Exam Analysis!C218:C280"
+    default_sheet = "Practice Test Analysis!C2:C5"
     range_name = st.text_input("Enter the name of the sheet and the range of cells you want to download:"
                             ,value = default_sheet)
     default_URL = "https://docs.google.com/spreadsheets/d/1RjkWwLxLb9dk8OjNYY6CwxTw4NXOaTO955qKuslNgBE/edit#gid=0"
@@ -128,7 +129,6 @@ def pdf_merger():
         #GET Calls to Google Sheets API
         download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
         filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
-        solutions_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=solutions_range, includeGridData=True).execute()
 
         #store the values into individual array
         category_values = filtered_dataset['valueRanges'][0]['values']
@@ -136,9 +136,7 @@ def pdf_merger():
         section_values = filtered_dataset['valueRanges'][2]['values']
         correctness_values = filtered_dataset['valueRanges'][3]['values']
         test_values = filtered_dataset['valueRanges'][4]['values']
-        solutions_values = filtered_dataset['valueRanges'][5]['values']
         
-        print(category_values)
         # Flags to check if filters are active
         is_category_filter = len(selected_category) > 0
         is_difficulty_filter = len(selected_difficulty) > 0
@@ -169,7 +167,7 @@ def pdf_merger():
                 
                 idx += 1
                 
-                
+        print(f"hyperlinks", hyperlinks) 
         save_dir = 'downloaded_pngs'
         os.makedirs(save_dir, exist_ok=True)
         
@@ -189,17 +187,44 @@ def pdf_merger():
         images = []
         
         #Convert images to pdf
-        file_names = os.listdir(save_dir)
-        file_names.remove('merged.pdf') 
-        file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
-        for filename in (file_names):
+        # file_names = os.listdir(save_dir)
+        # file_names.remove('merged.pdf') 
+        # file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
+        # for filename in (file_names):
+        #     if filename.endswith(".png"):
+        #         filepath = os.path.join(save_dir, filename)
+        #         image = (Image.open(filepath))
+        #         images.append(image.convert('RGB'))
+        
+        #hyperlinks for video 
+        solutions_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=solutions_range, includeGridData=True).execute()
+        solution_data = solutions_result['sheets'][0]['data'][0]['rowData']
+        #-----------------Getting all video link--------------------#
+        video_hyperlinks = [] 
+        for item in solution_data:
+            for value in item['values']:
+                uri = value['userEnteredFormat']['textFormat']['link']['uri']
+                video_hyperlinks.append(uri)
+        
+        #------Images------#
+        image_paths = [[]]
+        for idx, filename in enumerate(os.listdir(save_dir)):
             if filename.endswith(".png"):
                 filepath = os.path.join(save_dir, filename)
-                image = (Image.open(filepath))
-                images.append(image.convert('RGB'))
-                
+                image_paths[0].append((filepath, (f"Video Link {idx}", video_hyperlinks[idx] )))
         
-
+        print(f"image_paths", (sorted(image_paths)))
+        
+        
+        #------Video Hyperlinks------#
+        hyperlink_details = [[]]
+        for idx, url in enumerate(hyperlinks):
+            hyperlink_details[0].append(())
+            
+        
+        print(f"hyperlink_details", hyperlink_details)
+        create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
+        
         pdf_path = os.path.join(save_dir,'merged.pdf')
         if len(images) > 0:
             images[0].save(pdf_path, save_all=True, append_images=images[1:])
@@ -224,11 +249,31 @@ def pdf_merger():
 
                 
     if st.button("Generate Solutions"):
-        hyperlinks = []
-        #GET Calls to Google Sheets API
 
-                    
-       
+        solutions_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=solutions_range, includeGridData=True).execute()
+        solution_data = solutions_result['sheets'][0]['data'][0]['rowData']
+        #-----------------Getting all video link--------------------#
+        video_hyperlinks = [] 
+        for item in solution_data:
+            for value in item['values']:
+                uri = value['userEnteredFormat']['textFormat']['link']['uri']
+                video_hyperlinks.append(uri) 
+        #-----------------------------------------------------------# 
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     
     # #USER AUTHENTICATION
     # def user_logged_in():
     #     return st.session_state['user_token'] is not None
