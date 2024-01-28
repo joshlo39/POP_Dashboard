@@ -104,7 +104,9 @@ def pdf_merger():
     correctness_range = sheet_name + "!" + "D" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "D" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     test_range = sheet_name + "!" + "A" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "A" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     solutions_range = sheet_name + "!" + "F" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "F" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
-    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range]
+    
+    solutions_images_range = sheet_name + "!" + "E" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "E" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
+    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range,solutions_images_range]
 
     
     category = ["HOA","PSDA","PAM","GEOM","Vocab","Big Picture","Reading for Function","Literal Comprehension","Text Completion","Supporting Evidence", "Graphs and Charts","Comma Uses and Misuses","Subject-verb agreement","Combining and Separating Sentences","Essential and Non-essential clauses","Transitions","Plain Text"]
@@ -123,27 +125,29 @@ def pdf_merger():
     selected_correctness = set(st.multiselect("Correct or Incorrect", correctness.values()))
     
     selected_section = set(st.multiselect("Section/Module", section))
+    download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
+    filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
+
+    #store the values into individual array
+    category_values = filtered_dataset['valueRanges'][0]['values']
+    difficulty_values = filtered_dataset['valueRanges'][1]['values']
+    section_values = filtered_dataset['valueRanges'][2]['values']
+    correctness_values = filtered_dataset['valueRanges'][3]['values']
+    test_values = filtered_dataset['valueRanges'][4]['values']
     
+    # Flags to check if filters are active
+    is_category_filter = len(selected_category) > 0
+    is_difficulty_filter = len(selected_difficulty) > 0
+    is_section_filter = len(selected_section) > 0
+    is_correctness_filter = len(selected_correctness) > 0
+    is_test_filter = len(selected_tests) > 0
+    save_dir = 'downloaded_pngs'
+    #-----------------Normal Packet--------------------#
     if st.button("Generate PDF"):
         hyperlinks = []
         #GET Calls to Google Sheets API
-        download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
-        filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
 
-        #store the values into individual array
-        category_values = filtered_dataset['valueRanges'][0]['values']
-        difficulty_values = filtered_dataset['valueRanges'][1]['values']
-        section_values = filtered_dataset['valueRanges'][2]['values']
-        correctness_values = filtered_dataset['valueRanges'][3]['values']
-        test_values = filtered_dataset['valueRanges'][4]['values']
-        
-        # Flags to check if filters are active
-        is_category_filter = len(selected_category) > 0
-        is_difficulty_filter = len(selected_difficulty) > 0
-        is_section_filter = len(selected_section) > 0
-        is_correctness_filter = len(selected_correctness) > 0
-        is_test_filter = len(selected_tests) > 0
-        
+        #i dont think this does anything important 
         video_hyperlinks = []
         for number_of_rows, row in enumerate(download_result['sheets'][0]['data'][0]['rowData']):
             for num_of_row_values, cell in enumerate((row['values'])):
@@ -167,8 +171,6 @@ def pdf_merger():
                 
                 idx += 1
                 
-        print(f"hyperlinks", hyperlinks) 
-        save_dir = 'downloaded_pngs'
         os.makedirs(save_dir, exist_ok=True)
         
         # Download images
@@ -199,37 +201,64 @@ def pdf_merger():
         #hyperlinks for video 
         solutions_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=solutions_range, includeGridData=True).execute()
         solution_data = solutions_result['sheets'][0]['data'][0]['rowData']
+
         #-----------------Getting all video link--------------------#
         video_hyperlinks = [] 
-        for item in solution_data:
-            for value in item['values']:
-                uri = value['userEnteredFormat']['textFormat']['link']['uri']
-                video_hyperlinks.append(uri)
-        
+        for i,item in enumerate(solution_data):
+            print(f"Category Index: {i}, Value: {category_values[i][0]}")
+            if (not is_category_filter or category_values[i][0] in selected_category) and \
+                (not is_difficulty_filter or difficulty_values[i][0] in selected_difficulty) and \
+                (not is_section_filter or section_values[i][0] in selected_section) and \
+                (not is_correctness_filter or correctness_values[i][0] in selected_correctness) and \
+                (not is_test_filter or test_values[i][0] in selected_tests):
+                for idx,value in enumerate(item['values']):
+                        uri = value['userEnteredFormat']['textFormat']['link']['uri']
+                        video_hyperlinks.append(uri)
+        #video hyperlinks comes in order
+        #images don't come in order 
+        print(f"video_hyperlinks", video_hyperlinks)
+        for idx,uri in enumerate(video_hyperlinks):
+           print(f'Index: {idx}, URI: {uri}') 
         #------Images------#
-        image_paths = [[]]
-        for idx, filename in enumerate(os.listdir(save_dir)):
+        image_paths = []
+        inner_array = []
+        file_names = os.listdir(save_dir)
+        file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
+        get_rick_rolled= "https://www.youtube.com/watch?v=v7ScGV5128A"
+        for idx, filename in enumerate(file_names):
             if filename.endswith(".png"):
+                print(f"Index: {idx}, Filename: {filename}, URI: {get_rick_rolled}")
                 filepath = os.path.join(save_dir, filename)
-                image_paths[0].append((filepath, (f"Video Link {idx}", video_hyperlinks[idx] )))
-        
-        print(f"image_paths", (sorted(image_paths)))
+
+                inner_array.append((filepath, (f" ", get_rick_rolled)))
+                
+                if len(inner_array) == 4:
+                    image_paths.append(sorted(inner_array))
+                    inner_array = []
+        #if there is a non-full page of images, then append it to the end of the outer array
+        if inner_array:
+            image_paths.append(inner_array)
+        for idx,page in enumerate(image_paths):
+            print(f"Page Index:{idx}")
+            for image in page:
+                print(f"Image Tuple: {image}")
         
         
         #------Video Hyperlinks------#
-        hyperlink_details = [[]]
-        for idx, url in enumerate(hyperlinks):
-            hyperlink_details[0].append(())
+        #i dont think i use this
+        # hyperlink_details = [[]]
+        # for idx, url in enumerate(hyperlinks):
+        #     hyperlink_details[0].append(())
             
         
-        print(f"hyperlink_details", hyperlink_details)
+        # print(f"hyperlink_details", hyperlink_details)
         create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
         
-        pdf_path = os.path.join(save_dir,'merged.pdf')
-        if len(images) > 0:
-            images[0].save(pdf_path, save_all=True, append_images=images[1:])
-        else:
-            st.error("No images to merge")
+        # pdf_path = os.path.join(save_dir,'merged.pdf')
+        # if len(images) > 0:
+        #     images[0].save(pdf_path, save_all=True, append_images=images[1:])
+        # else:
+        #     st.error("No images to merge")
 
         # Delete images from folder
         for filename in os.listdir(save_dir):
@@ -246,19 +275,129 @@ def pdf_merger():
                     file_name = 'merged.pdf',
                     mime = 'application/octet-stream'
                 )
+        for filename in os.listdir(save_dir):
+            if filename.endswith(".pdf"):
+                os.remove(os.path.join(save_dir, filename))
+#-----------------End of Normal Packet--------------------#
 
-                
+#-----------------Solutions Packet--------------------#      
     if st.button("Generate Solutions"):
-
+        
+        download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=solutions_images_range, includeGridData=True).execute()
+        filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
         solutions_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=solutions_range, includeGridData=True).execute()
         solution_data = solutions_result['sheets'][0]['data'][0]['rowData']
+
+        #-------Getting hyperlink for the images and downloading the images-------#
+        hyperlinks = []
+        idx = 0 # Index of the current cell
+        for number_of_rows, row in enumerate(download_result['sheets'][0]['data'][0]['rowData']):
+            for num_of_row_values, cell in enumerate((row['values'])):
+                # Check if cell meets all active filters
+                #the logic is if the filter is not active then reurns true for that particular filter
+                if (not is_category_filter or category_values[idx][0] in selected_category) and \
+                (not is_difficulty_filter or difficulty_values[idx][0] in selected_difficulty) and \
+                (not is_section_filter or section_values[idx][0] in selected_section) and \
+                (not is_correctness_filter or correctness_values[idx][0] in selected_correctness) and \
+                (not is_test_filter or test_values[idx][0] in selected_tests):
+                    if 'hyperlink' in cell:
+                        hyperlinks.append(cell['hyperlink'])     
+                
+                idx += 1
+                
+        os.makedirs(save_dir, exist_ok=True)
+        
+        # Download images
+        for idx, url in enumerate(hyperlinks):
+            try:
+                if 'drive.google.com' in url:
+                    file_id = url.split('/')[-2]
+                    file_path = os.path.join(save_dir, f'image_{idx + 1}.png')
+                    download_drive_file(drive_service, file_id, file_path)
+                else:
+                    print(f"Failed to download or invalid content type for URL: {url}")
+            except Exception as e:
+                print(f"Request failed for URL {url}: {e}")
+
+        #-------END: Getting hyperlink for the images and downloading the images-------#
+
         #-----------------Getting all video link--------------------#
         video_hyperlinks = [] 
-        for item in solution_data:
-            for value in item['values']:
-                uri = value['userEnteredFormat']['textFormat']['link']['uri']
-                video_hyperlinks.append(uri) 
-        #-----------------------------------------------------------# 
+        for i,item in enumerate(solution_data):
+            print(f"Category Index: {i}, Value: {category_values[i][0]}")
+            if (not is_category_filter or category_values[i][0] in selected_category) and \
+                (not is_difficulty_filter or difficulty_values[i][0] in selected_difficulty) and \
+                (not is_section_filter or section_values[i][0] in selected_section) and \
+                (not is_correctness_filter or correctness_values[i][0] in selected_correctness) and \
+                (not is_test_filter or test_values[i][0] in selected_tests):
+                for idx,value in enumerate(item['values']):
+                        uri = value['userEnteredFormat']['textFormat']['link']['uri']
+                        video_hyperlinks.append(uri)
+        #video hyperlinks comes in order
+        #images don't come in order 
+        print(f"video_hyperlinks", video_hyperlinks)
+        for idx,uri in enumerate(video_hyperlinks):
+           print(f'Index: {idx}, URI: {uri}') 
+        #------Images------#
+        image_paths = []
+        inner_array = []
+        file_names = os.listdir(save_dir)
+        file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
+        for idx, filename in enumerate(file_names):
+            if filename.endswith(".png"):
+                print(f"Index: {idx}, Filename: {filename}, URI: {video_hyperlinks[idx]}")
+                filepath = os.path.join(save_dir, filename)
+
+                inner_array.append((filepath, (f" ", video_hyperlinks[idx] )))
+                
+                if len(inner_array) == 4:
+                    image_paths.append(sorted(inner_array))
+                    inner_array = []
+        #if there is a non-full page of images, then append it to the end of the outer array
+        if inner_array:
+            image_paths.append(inner_array)
+        for idx,page in enumerate(image_paths):
+            print(f"Page Index:{idx}")
+            for image in page:
+                print(f"Image Tuple: {image}")
+        
+        
+        #------Video Hyperlinks------#
+        #i dont think i use this
+        # hyperlink_details = [[]]
+        # for idx, url in enumerate(hyperlinks):
+        #     hyperlink_details[0].append(())
+            
+        
+        # print(f"hyperlink_details", hyperlink_details)
+        create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
+        
+        # pdf_path = os.path.join(save_dir,'merged.pdf')
+        # if len(images) > 0:
+        #     images[0].save(pdf_path, save_all=True, append_images=images[1:])
+        # else:
+        #     st.error("No images to merge")
+
+        # Delete images from folder
+        for filename in os.listdir(save_dir):
+            if filename.endswith(".png"):
+                os.remove(os.path.join(save_dir, filename))
+        pdf_path = 'downloaded_pngs/merged.pdf'
+        
+        #open pdf for user to download
+        if os.path.exists(pdf_path):
+            with open(pdf_path, 'rb') as f:
+                btn = st.download_button(
+                    label = "Merged PDF",
+                    data = f,
+                    file_name = 'merged.pdf',
+                    mime = 'application/octet-stream'
+                )
+        for filename in os.listdir(save_dir):
+            if filename.endswith(".pdf"):
+                os.remove(os.path.join(save_dir, filename))
+
+         
 
     
     

@@ -1,5 +1,3 @@
-import streamlit as st
-import sys
 import gspread
 import requests
 import os
@@ -16,7 +14,7 @@ import pyrebase
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from PyPDF2 import PdfReader, PdfWriter
-from reportlab.lib.colors import blue
+from reportlab.lib.colors import red  
 
 
 
@@ -52,7 +50,7 @@ def create_hyperlink_pdf(output_pdf_path, hyperlinks, link_text_positions):
 
     c.save()
     
-def create_pdf_with_2x2_images_hyperlinks(output_pdf_path, image_details, max_image_width=350, max_image_height=350):
+def create_pdf_with_2x2_images_hyperlinks(output_pdf_path, image_details, max_image_width=306, max_image_height=396):
     c = canvas.Canvas(output_pdf_path, pagesize=letter)
     page_width, page_height = letter
     print(f"page_width: {page_width}, page_height: {page_height}")
@@ -66,7 +64,7 @@ def create_pdf_with_2x2_images_hyperlinks(output_pdf_path, image_details, max_im
             # Open and resize the image
             img = Image.open(image_path)
             img_width, img_height = img.size
-    
+            
             scale = min(max_image_width / img_width,max_image_height / img_height)
             img_width *= scale
             img_height *= scale
@@ -80,12 +78,12 @@ def create_pdf_with_2x2_images_hyperlinks(output_pdf_path, image_details, max_im
 
             # Add the hyperlink
             link_text, link_url = hyperlink
-            text = c.beginText(x, y - 20)  # Adjust the y-coordinate for hyperlink position
-            text.setFont("Helvetica", 12)
-            text.setFillColor(blue)
+            text = c.beginText(x, y)  # Adjust the y-coordinate for hyperlink position
+            text.setFont("Helvetica", 14)
+            text.setFillColor(red)
             text.textLine(link_text)
             c.drawText(text)
-            c.linkURL(link_url, (x, y - 20, x + 100, y), relative=1)
+            c.linkURL(link_url, (x, y, x + img_width, y+img_height), relative=0)
 
         # Create a new page if not the last page
         if page_idx < len(image_details) - 1:
