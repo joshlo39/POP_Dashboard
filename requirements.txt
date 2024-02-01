@@ -126,7 +126,7 @@ pycparser==2.21
 pycryptodome==3.19.0
 pydeck==0.8.0
 Pygments==2.13.0
-PyJWT==2.8.0
+PyJWT==1.6.4
 Pympler==1.0.1
 PyMuPDF==1.23.19
 PyMuPDFb==1.23.9
