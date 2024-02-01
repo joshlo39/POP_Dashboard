@@ -361,8 +361,7 @@ def pdf_merger():
             for image in page:
                 print(f"Image Tuple: {image}")
         
-        
-        #------Video Hyperlinks------#
+        #------VideoHyperlinks------#
         #i dont think i use this
         # hyperlink_details = [[]]
         # for idx, url in enumerate(hyperlinks):
@@ -383,6 +382,7 @@ def pdf_merger():
             if filename.endswith(".png"):
                 os.remove(os.path.join(save_dir, filename))
         pdf_path = 'downloaded_pngs/merged.pdf'
+        
         
         #open pdf for user to download
         if os.path.exists(pdf_path):

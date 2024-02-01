@@ -15,6 +15,9 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.lib.colors import red  
+import fitz #PyMuPdf
+from PIL import Image
+
 
 
 
@@ -130,3 +133,35 @@ def draw_grid(canvas, page_width, page_height, interval=50):
         canvas.line(x, 0, x, page_height)
         canvas.drawString(x, 5, str(x))
 
+
+
+
+def extract_images_from_pdf(pdf_path, output_folder):
+    # Open the PDF
+    pdf_document = fitz.open(pdf_path)
+
+    for page_number in range(len(pdf_document)):
+        # Get the page
+        page = pdf_document.load_page(page_number)
+
+        # Render the page to an image
+        pix = page.get_pixmap()
+        img = Image.open(io.BytesIO(pix.tobytes("png")))
+
+        # Dimensions of each quadrant
+        width, height = img.size
+        quadrant_width = width // 2
+        quadrant_height = height // 2
+
+        # Crop each quadrant and save
+        for i in range(2):
+            for j in range(2):
+                left = i * quadrant_width
+                top = j * quadrant_height
+                right = (i + 1) * quadrant_width
+                bottom = (j + 1) * quadrant_height
+
+                cropped_img = img.crop((left, top, right, bottom))
+                cropped_img.save(f"{output_folder}/page_{page_number + 1}_quadrant_{i+1}_{j+1}.png")
+
+    pdf_document.close()
