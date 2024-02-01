@@ -3,7 +3,6 @@ import sys
 import gspread
 import requests
 import os
-import streamlit_authenticator as stauth
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import auth
