@@ -90,3 +90,5 @@ zipp==3.17.0
 pypdf
 PyPDF2
 reportlab
+PyMuPDF
+PyMuPDFb
