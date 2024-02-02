@@ -16,7 +16,6 @@ from reportlab.lib.pagesizes import letter
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.lib.colors import red  
 import fitz #PyMuPdf
-from PIL import Image
 
 
 
