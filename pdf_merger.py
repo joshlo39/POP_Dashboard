@@ -305,6 +305,11 @@ def pdf_merger():
                 idx += 1
                 
         os.makedirs(save_dir, exist_ok=True)
+        # Delete images from folder
+        for filename in os.listdir(save_dir):
+            if filename.endswith(".png"):
+                os.remove(os.path.join(save_dir, filename))
+        pdf_path = 'downloaded_pngs/merged.pdf'
         
         # Download images
         for idx, url in enumerate(hyperlinks):
@@ -322,14 +327,15 @@ def pdf_merger():
 
         #-----------------Getting all video link--------------------#
         video_hyperlinks = [] 
-        for i,item in enumerate(solution_data):
+        for i, item in enumerate(solution_data):
             print(f"Category Index: {i}, Value: {category_values[i][0]}")
             if (not is_category_filter or category_values[i][0] in selected_category) and \
                 (not is_difficulty_filter or difficulty_values[i][0] in selected_difficulty) and \
                 (not is_section_filter or section_values[i][0] in selected_section) and \
                 (not is_correctness_filter or correctness_values[i][0] in selected_correctness) and \
                 (not is_test_filter or test_values[i][0] in selected_tests):
-                for idx,value in enumerate(item['values']):
+                for idx, value in enumerate(item['values']):
+                    if 'userEnteredFormat' in value and 'textFormat' in value['userEnteredFormat'] and 'link' in value['userEnteredFormat']['textFormat']:
                         uri = value['userEnteredFormat']['textFormat']['link']['uri']
                         video_hyperlinks.append(uri)
         #video hyperlinks comes in order
@@ -344,10 +350,9 @@ def pdf_merger():
         file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
         for idx, filename in enumerate(file_names):
             if filename.endswith(".png"):
-                print(f"Index: {idx}, Filename: {filename}, URI: {video_hyperlinks[idx]}")
+                print(f"Index: {idx}, Filename: {filename}, URI: {video_hyperlinks[idx] if len(video_hyperlinks) > 0 else 'https://www.youtube.com/watch?v=v7ScGV5128A'}")
                 filepath = os.path.join(save_dir, filename)
-
-                inner_array.append((filepath, (f" ", video_hyperlinks[idx] )))
+                inner_array.append((filepath, (f" ", video_hyperlinks[idx] if len(video_hyperlinks) > 0 else 'https://www.youtube.com/watch?v=v7ScGV5128A')))
                 
                 if len(inner_array) == 4:
                     image_paths.append(sorted(inner_array))
@@ -359,22 +364,11 @@ def pdf_merger():
             print(f"Page Index:{idx}")
             for image in page:
                 print(f"Image Tuple: {image}")
-        
-        #------VideoHyperlinks------#
-        #i dont think i use this
-        # hyperlink_details = [[]]
-        # for idx, url in enumerate(hyperlinks):
-        #     hyperlink_details[0].append(())
-            
-        
-        # print(f"hyperlink_details", hyperlink_details)
-        create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
-        
-        # pdf_path = os.path.join(save_dir,'merged.pdf')
-        # if len(images) > 0:
-        #     images[0].save(pdf_path, save_all=True, append_images=images[1:])
-        # else:
-        #     st.error("No images to merge")
+        if len(video_hyperlinks) > 0:
+            create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
+        else:
+            create_pdf_with_2x2_images_hyperlinks_small_hyperlink('downloaded_pngs/merged.pdf', image_paths )
+    
 
         # Delete images from folder
         for filename in os.listdir(save_dir):

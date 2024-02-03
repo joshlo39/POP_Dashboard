@@ -52,6 +52,8 @@ def create_hyperlink_pdf(output_pdf_path, hyperlinks, link_text_positions):
 
     c.save()
     
+
+
 def create_pdf_with_2x2_images_hyperlinks(output_pdf_path, image_details, max_image_width=306, max_image_height=396):
     c = canvas.Canvas(output_pdf_path, pagesize=letter)
     page_width, page_height = letter
@@ -92,7 +94,47 @@ def create_pdf_with_2x2_images_hyperlinks(output_pdf_path, image_details, max_im
             c.showPage()
 
     c.save()
-    
+ 
+def create_pdf_with_2x2_images_hyperlinks_small_hyperlink(output_pdf_path, image_details, max_image_width=306, max_image_height=396):
+    c = canvas.Canvas(output_pdf_path, pagesize=letter)
+    page_width, page_height = letter
+    print(f"page_width: {page_width}, page_height: {page_height}")
+
+    for page_idx, page_content in enumerate(image_details):
+        for image_idx, (image_path, hyperlink) in enumerate(page_content):
+            # Calculate image position
+            x = (page_width / 2) * (image_idx % 2)
+            y = (page_height / 2) * (1 - (image_idx // 2))
+
+            # Open and resize the image
+            img = Image.open(image_path)
+            img_width, img_height = img.size
+            
+            scale = min(max_image_width / img_width,max_image_height / img_height)
+            img_width *= scale
+            img_height *= scale
+
+            # Adjust position to center the image in its quadrant
+            x += (max_image_width - img_width) / 2
+            y += (max_image_height - img_height) / 2
+
+            # Add the image
+            c.drawImage(image_path, x, y, width=img_width, height=img_height)
+
+            # Add the hyperlink
+            link_text, link_url = hyperlink
+            text = c.beginText(x, y)  # Adjust the y-coordinate for hyperlink position
+            text.setFont("Helvetica", 14)
+            text.setFillColor(red)
+            text.textLine(link_text)
+            c.drawText(text)
+            c.linkURL(link_url, (x, y, x, y), relative=0)
+
+        # Create a new page if not the last page
+        if page_idx < len(image_details) - 1:
+            c.showPage()
+
+    c.save()   
 
 def merge_pdfs(base_pdf_path, overlay_pdf_path, output_pdf_path):
     # Open the base PDF
