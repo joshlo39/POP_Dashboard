@@ -145,6 +145,12 @@ def pdf_merger():
     if st.button("Generate PDF"):
         hyperlinks = []
         #GET Calls to Google Sheets API
+                # Delete images from folder
+        for filename in os.listdir(save_dir):
+            if filename.endswith(".png"):
+                os.remove(os.path.join(save_dir, filename))
+        pdf_path = 'downloaded_pngs/merged.pdf'
+        
 
         #i dont think this does anything important 
         video_hyperlinks = []
