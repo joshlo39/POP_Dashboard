@@ -208,17 +208,18 @@ def pdf_merger():
         solution_data = solutions_result['sheets'][0]['data'][0]['rowData']
 
         #-----------------Getting all video link--------------------#
-        video_hyperlinks = [] 
-        for i,item in enumerate(solution_data):
-            print(f"Category Index: {i}, Value: {category_values[i][0]}")
-            if (not is_category_filter or category_values[i][0] in selected_category) and \
-                (not is_difficulty_filter or difficulty_values[i][0] in selected_difficulty) and \
-                (not is_section_filter or section_values[i][0] in selected_section) and \
-                (not is_correctness_filter or correctness_values[i][0] in selected_correctness) and \
-                (not is_test_filter or test_values[i][0] in selected_tests):
-                for idx,value in enumerate(item['values']):
-                        uri = value['userEnteredFormat']['textFormat']['link']['uri']
-                        video_hyperlinks.append(uri)
+        # video_hyperlinks = [] 
+        # for i,item in enumerate(solution_data):
+        #     print(f"Category Index: {i}, Value: {category_values[i][0]}")
+        #     if (not is_category_filter or category_values[i][0] in selected_category) and \
+        #         (not is_difficulty_filter or difficulty_values[i][0] in selected_difficulty) and \
+        #         (not is_section_filter or section_values[i][0] in selected_section) and \
+        #         (not is_correctness_filter or correctness_values[i][0] in selected_correctness) and \
+        #         (not is_test_filter or test_values[i][0] in selected_tests):
+        #         for idx,value in enumerate(item['values']):
+        #                 uri = value['userEnteredFormat']['textFormat']['link']['uri']
+        #                 video_hyperlinks.append(uri)
+
         #video hyperlinks comes in order
         #images don't come in order 
         print(f"Length of Video Hyperlink", len(video_hyperlinks))
@@ -231,6 +232,8 @@ def pdf_merger():
         if 'merged.pdf' in file_names:
             file_names.remove('merged.pdf')
         print(f"File Names: {file_names}")
+        
+        
         file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
         get_rick_rolled= "https://www.youtube.com/watch?v=v7ScGV5128A"
         for idx, filename in enumerate(file_names):
@@ -260,7 +263,8 @@ def pdf_merger():
             
         
         # print(f"hyperlink_details", hyperlink_details)
-        create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
+        #create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
+        create_pdf_with_2x2_images_hyperlinks_small_hyperlink('downloaded_pngs/merged.pdf', image_paths )
         
         # pdf_path = os.path.join(save_dir,'merged.pdf')
         # if len(images) > 0:
