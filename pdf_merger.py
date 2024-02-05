@@ -228,7 +228,8 @@ def pdf_merger():
         image_paths = []
         inner_array = []
         file_names = os.listdir(save_dir)
-        file_names.remove('merged.pdf')
+        if 'merged.pdf' in file_names:
+            file_names.remove('merged.pdf')
         print(f"File Names: {file_names}")
         file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
         get_rick_rolled= "https://www.youtube.com/watch?v=v7ScGV5128A"
