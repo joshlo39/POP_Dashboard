@@ -221,7 +221,7 @@ def pdf_merger():
                         video_hyperlinks.append(uri)
         #video hyperlinks comes in order
         #images don't come in order 
-        print(f"video_hyperlinks", video_hyperlinks)
+        print(f"Length of Video Hyperlink", len(video_hyperlinks))
         for idx,uri in enumerate(video_hyperlinks):
            print(f'Index: {idx}, URI: {uri}') 
         #------Images------#
