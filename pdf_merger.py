@@ -91,7 +91,7 @@ def pdf_merger():
                     "Ptest #11 (201912U)","Ptest #12 (202009A)","Ptest #13 (202008A)","Ptest #14 (201911U)",
                     "Ptest #15 (202105U)","Ptest #16 (201905U)","Ptest #17 (201910U)","Ptest #18 (201905A)",
                     "Ptest #19 (201903U)","Ptest #20 (202105A)","Ptest #21 (202306U)","Ptest #22 (202304SD)",
-                      "Ptest #23 (202305U)","D Practice Test #1", "D Practice Test #2", "D Practice Test #3",
+                      "Ptest #23 (202305U)","D Practice Test #1", "D Practice Test #2", "D Practice Test #3","D Practice Test #4",
                       "NL Practice Test #1","NL Practice Test #2","NL Practice Test #3","NL Practice Test #4"]
     
 
