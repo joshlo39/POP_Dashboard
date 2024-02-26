@@ -162,7 +162,6 @@ def pdf_merger():
     download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
     filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
     
-    print(f"Filtered Dataset: {filtered_dataset}")
     #store the values into individual array
     category_values = filtered_dataset['valueRanges'][0]['values']
     difficulty_values = filtered_dataset['valueRanges'][1]['values']
@@ -170,7 +169,6 @@ def pdf_merger():
     correctness_values = filtered_dataset['valueRanges'][3]['values']
     test_values = filtered_dataset['valueRanges'][4]['values']
     sub_category_one_values = filtered_dataset['valueRanges'][7]['values']
-    print(f"Sub-Category One Values: {sub_category_one_values}") 
     # Flags to check if filters are active
     is_category_filter = len(selected_category) > 0
     is_difficulty_filter = len(selected_difficulty) > 0
@@ -350,7 +348,8 @@ def pdf_merger():
                 (not is_difficulty_filter or difficulty_values[idx][0] in selected_difficulty) and \
                 (not is_section_filter or section_values[idx][0] in selected_section) and \
                 (not is_correctness_filter or correctness_values[idx][0] in selected_correctness) and \
-                (not is_test_filter or test_values[idx][0] in selected_tests):
+                (not is_test_filter or test_values[idx][0] in selected_tests) and \
+                (not is_subcategory1_filter or sub_category_one_values[idx][0] in selected_category_one):
                     if 'hyperlink' in cell:
                         hyperlinks.append(cell['hyperlink'])     
                 
