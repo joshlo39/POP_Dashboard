@@ -13,8 +13,8 @@ import io
 from PIL import Image
 import pyrebase
 from pdf_merger import pdf_merger
-from solutions import solutions_packet 
-
+from splitter import splitter
+from utils import extract_images_from_pdf
 #------------Configuring Streamlit--------#
 st.set_page_config(
     page_title='POP Dashboard',  # Your app title
@@ -47,11 +47,10 @@ drive_service = build('drive', 'v3', credentials=creds)
 def main():
     
     with st.sidebar:
-        selected_screen = st.selectbox("Select an option", ["PDF Merger", "Solutions Packet"]) 
+        selected_screen = st.selectbox("Select an option", ["PDF Merger", "Splitter"]) 
     if selected_screen == "PDF Merger":
         pdf_merger()
     else:
-        solutions_packet()
-
+        splitter()
 if __name__ == "__main__":
     main()
