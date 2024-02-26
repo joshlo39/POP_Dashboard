@@ -43,7 +43,7 @@ def pdf_merger():
 
     #------------Configuring Streamlit--------#
     st.title("Peace of Pi: PDF Merger")
-    default_sheet = "Practice Test Analysis!C2:C5"
+    default_sheet = "Practice Test Analysis!C2:C1335"
     range_name = st.text_input("Enter the name of the sheet and the range of cells you want to download:"
                             ,value = default_sheet)
     default_URL = "https://docs.google.com/spreadsheets/d/1RjkWwLxLb9dk8OjNYY6CwxTw4NXOaTO955qKuslNgBE/edit#gid=0"
@@ -105,15 +105,15 @@ def pdf_merger():
     solutions_range = sheet_name + "!" + "F" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "F" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     
     sub_category_one_range= sheet_name + "!" + "L" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "L" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
-    
+    sub_category_two_range= sheet_name + "!" + "M" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "M" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
+    sub_category_three_range= sheet_name + "!" + "N" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "N" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
+
     solutions_images_range = sheet_name + "!" + "E" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "E" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
-    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range,solutions_images_range,sub_category_one_range]
+    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range,solutions_images_range,sub_category_one_range,sub_category_two_range,sub_category_three_range]
 
     
     category = ["HOA","PSDA","PAM","GEOM","Vocab","Big Picture","Reading for Function","Literal Comprehension","Text Completion","Supporting Evidence", "Graphs and Charts","Comma Uses and Misuses","Subject-verb agreement","Combining and Separating Sentences","Essential and Non-essential clauses","Transitions","Plain Text"]
-    sub_category_one = ['Linear Functions Part 1','Angles and Triangles','Intro to Functions','Linear Functions Part 2','Polynomial Expressions','Rational Expressions','Special Cases','Right Triangles & Trig',
- 'Exponential Functions',
- 'Quadratic Equations',
+    sub_category_one = ['Linear Functions Part 1','Angles and Triangles','Intro to Functions','Linear Functions Part 2','Polynomial Expressions','Rational Expressions','Special Cases','Right Triangles & Trig','Exponential Functions','Quadratic Equations',
  'Isolating Variables',
  'Systems of Equations',
  'Linear Equations',
@@ -143,6 +143,38 @@ def pdf_merger():
  'Rational Equations',
  'Complex Numbers',
  'Data and Stats 2']
+    sub_category_two =[
+     "Deriving Equation", "Parallel Lines & Transversals", "Evaluating", "Deriving Inequality", "Adding/Subtracting",
+    "POG", "Dividing", "Linear Equations", "Pythagorean", "Finding y-int", "SOS",
+    "NA", "Finding Slope", "Substitution", "Factoring", "Fractions & Decimals", "45-45-90",
+    "Line Graph", "Fraction of", "Predicted Value", "Percent of", "Single Conversion", "Median",
+    "Interpreting", "Deriving Graph", "30-60-90", "Mixed", "Word Problem", "Factored Form",
+    "Unit Circle", "Probability", "Number of Solutions", "Special Cases", "Elimination", "Direct Proportionality",
+    "Finding Area", "Greater/Less than", "Intercepts", "Finding Volume", "Adding & Subtracting", "Quadratic Formula",
+    "Shift", "Base Reduction", "Distributing", "Finding Perimeter", "Solving", "Mean",
+    "Data Set", "Basic", "Range", "Multiplying", "Comparing", "Standard Form",
+    "Congruency", "Create & Solve", "Systems of Equations", "sinx=cosy", "Interpreting Equation", "Percent Inc/Dec",
+    "Cubic", "Proportions", "OG", "Finding Arc Length", "Interpreting Graph", "Vertex Form",
+    "Inequality Graph", "Isosceles", "Product Rule", "Linear Combination", "Trig", "Actual vs. Predicted",
+    "Percent Change", "Sub & Solve", "Pie Chart", "Population Density", "Finding Length", "Tangent Line",
+    "Standard Deviation", "Rate to Rate", "Classic", "Proof", "Easy", "General Form",
+    "Radical to Exponential", "Sum of Solutions", "Finding Solution", "Outlier", "Skew", "Definition",
+    "Reverse", "Square Root Method", "Graph", "Cylinder", "Linear Function", "Quadratic Function",
+    "Finding Surface Area", "Finding x-int", "Constants", "Rectangular Prism", "Create & Sub", "Triple",
+    "Hard", "Finding Area of Shaded Region", "Triangles", "Average Speed", "Inequality", "Finding Ratio",
+    "Fractions", "Long Division", "PTSI", "Double Conversion", "How many times", "Bar Graph",
+    "Finding Radius", "Reading Graph", "Arc Length and Angle", "Equation", "Extraneous Solutions", "Area",
+    "Vertical Angles", "Angle sum of Quadrilaterals", "Zeros from equation", "Quotient Rule", "Directly Proportional", "Margin of Error",
+    "Sample Selection", "Likelihood", "Proving", "Finding Width", "Degrees and Radians", "Create Equation & Solve",
+    "Right Triangle", "Percent Mixed", "Finding Value", "Solving for x", "Volume", "Parallel",
+    "Single", "Finding Intercepts", "Deriving Table", "Ratio", "Finding intercepts", "Perpendicular",
+    "Finding Arc Measure", "Proportion", "Max", "y-int", "Radians & Degrees", "Pythagorean Theorem",
+    "Multi-Dimensional", "Radical as well", "Finding Predicted y-value", "Perimeter", "Complex", "Surface Area",
+    "Radical to Exponential ", "x-int", "Density", "POS", "Deriving Expression", "Min", "Comparing Means", "Finding Angle", "Square root method"
+]
+    sub_category_three = [
+    "Table", "Finding Angle", "f(a)", "NA", "Slope-Intercept Form", "Table to Graph", "Perfect Square", "Points", "Infinitely Many Solutions", "Trapezoid", "Equation", "Factoring", "Word Problem", "Graph", "Factored Form", "Square", "Part", "Box-Plot", "Whole", "Frequency Table", "Standard Form", "Inequality", "Triangle + Kite", "Bar Graph", "Finding vertex", "Scatter Plots", "Constants", "Unit Circle", "Elimination", "Discriminant", "Finding x-int", "No Solution", "Data Set", "Parallelogram", "Diameter", "Right Triangle", "Decimals", "Asymptote", "Ratio & Area", "Trick", "Deriving Graph", "Trig", "Perpendicular", "One-Variable", "New", "Percent Inc/Dec", "Dot Plot", "Percent", "Function Notation", "Deriving Equation", "One Solution", "Proving", "Geometric Mean", "Decrease", "Quadratic Equation", "Finding Radius", "Rectangle", "Frequency", "Substitution", "Line Graph", "If", "A>1", "Rate to Rate", "Interpreting", "Finding Sine and Cosine", "How Many Times", "Increase", "Finding Sine", "Distributing negative", "Unit Conversion", "Finding Ratio", "Product Rule", "Ratio", "Finding Center", "A=1", "f(0)", "Extraneous Solutions", "y-int", "Interpreting intercept", "Cylinder", "Finding Cosine", "Square Root Method", "Quadratic Formula", "Outer-Inner", "Hour Glass", "Finding Sine and Tangent", "Difference of Squares", "Finding Circumference", "Mixed", "y", "Finding Solution", "Vertex Form", "Area", "Finding Sum of x-coordinates", "Radical to Exponential", "Initial Amount", "Rationalizing", "Radius and Angle", "U-Sub", "y-value", "Triangle", "f(x)=a", "Solving", "Scale", "Circle", "Finding Side Length", "PTSI", "Distributing Negative", "Finding y-value", "Sphere", "f(x)=0", "Finding Perimeter", "x", "Rate of Change", "Proof", "X^4", "Triangle and Circle", "Reading Graph", "Equations", "Cube", "Standard to General Form", "Cylinder and Sphere", "Equation and Point", "Dividing", "Shift", "Grouping", "Absolute Value", "Adding & Subtracting", "Rectangle and Semi-Circle", "Finding Max", "Form", "Radius", "Diff of Squares", "PFT", "Constants", "GCF", "Slope and Point", "Right Triangles", "Deriving", "Rectangular Prism", "Sub and Solve", "Definition", "Cone", "Finding Area", "a=1", "Linear", "Cosine", "Finding Vertex", "Sub & Solve", "Word Problems", "One-Step", "x=a", "From Equation", "Tangent", "Infinitely Many", "Both", "Isosceles Right Triangle", "Similarity", "a>1", "Function", "Sine", "Time", "Finding Slope", "Exponential Function", "Radians to degrees", "x-int", "POG", "Angle", "Squared", "Two-Step", "Exponential", "Factored", "From Graph", "Inscribed Square", "Histogram", "Rate Word Problem", "How many times", "Quadratic Function", "Single", "Percent of", "Combined Mean", "Finding x", "Max", "Radians to Degrees", "Find height", "Directly Proportional", "Finding y", "Initial", "Outer - Inner", "Finding Diameter", "Rate word problem", "System of Inequality", "Classic", "Deriving Table", "Double Bubble", "Factor by grouping", "Multi-step", "Exponential Functions", "Isosceles Triangle", "Solving for y", "Finding Constants", "Percent greater"
+]
     difficulty = ["1","2","3","4","5"]
     correctness = {
         "Correct":"1",
@@ -153,9 +185,12 @@ def pdf_merger():
     st.subheader("Filter")
     selected_tests = set(st.multiselect("Practice Tests:", practice_tests))
     selected_difficulty = set(st.multiselect("Difficulty", difficulty))
-    selected_category = set(st.multiselect("Category", category))
     
+    selected_category = set(st.multiselect("Category", category))
     selected_category_one = set(st.multiselect("Sub-Category 1",sub_category_one))
+    selected_category_two = set(st.multiselect("Sub-Category 2",sub_category_two))
+    selected_category_three = set(st.multiselect("Sub-Category 3",sub_category_three))
+    
     selected_correctness = set(st.multiselect("Correct or Incorrect", correctness.values()))
     
     selected_section = set(st.multiselect("Section/Module", section))
@@ -169,13 +204,18 @@ def pdf_merger():
     correctness_values = filtered_dataset['valueRanges'][3]['values']
     test_values = filtered_dataset['valueRanges'][4]['values']
     sub_category_one_values = filtered_dataset['valueRanges'][7]['values']
+    sub_category_two_values = filtered_dataset['valueRanges'][8]['values'] 
+    sub_category_three_values = filtered_dataset['valueRanges'][9]['values']
+    print(f"SubCat 3 Values {sub_category_three_values}")
     # Flags to check if filters are active
     is_category_filter = len(selected_category) > 0
     is_difficulty_filter = len(selected_difficulty) > 0
     is_section_filter = len(selected_section) > 0
     is_correctness_filter = len(selected_correctness) > 0
     is_test_filter = len(selected_tests) > 0
-    is_subcategory1_filter = len(selected_category_one)
+    is_subcategory1_filter = len(selected_category_one) > 0
+    is_subcategory2_filter = len(selected_category_two) > 0
+    is_subcategory3_filter = len(selected_category_three) > 0
     save_dir = 'downloaded_pngs'
     #-----------------Normal Packet--------------------#
     if st.button("Generate PDF"):
@@ -207,7 +247,9 @@ def pdf_merger():
                 (not is_section_filter or section_values[idx][0] in selected_section) and \
                 (not is_correctness_filter or correctness_values[idx][0] in selected_correctness) and \
                     (not is_test_filter or test_values[idx][0] in selected_tests) and \
-                    (not is_subcategory1_filter or sub_category_one_values[idx][0] in selected_category_one):
+                    (not is_subcategory1_filter or sub_category_one_values[idx][0] in selected_category_one) and \
+                    (not is_subcategory2_filter or sub_category_two_values[idx][0] in selected_category_two) and \
+                    (not is_subcategory3_filter or sub_category_three_values[idx][0] in selected_category_three):
                     if 'hyperlink' in cell:
                         hyperlinks.append(cell['hyperlink'])     
                 
@@ -347,7 +389,9 @@ def pdf_merger():
                 (not is_section_filter or section_values[idx][0] in selected_section) and \
                 (not is_correctness_filter or correctness_values[idx][0] in selected_correctness) and \
                 (not is_test_filter or test_values[idx][0] in selected_tests) and \
-                (not is_subcategory1_filter or sub_category_one_values[idx][0] in selected_category_one):
+                (not is_subcategory1_filter or sub_category_one_values[idx][0] in selected_category_one) and \
+                (not is_subcategory2_filter or sub_category_two_values[idx][0] in selected_category_two) and \
+                (not is_subcategory3_filter or sub_category_three_values[idx][0] in selected_category_three):
                     if 'hyperlink' in cell:
                         hyperlinks.append(cell['hyperlink'])     
                 
@@ -382,7 +426,10 @@ def pdf_merger():
                 (not is_difficulty_filter or difficulty_values[i][0] in selected_difficulty) and \
                 (not is_section_filter or section_values[i][0] in selected_section) and \
                 (not is_correctness_filter or correctness_values[i][0] in selected_correctness) and \
-                (not is_test_filter or test_values[i][0] in selected_tests):
+                (not is_test_filter or test_values[i][0] in selected_tests) and \
+                (not is_subcategory1_filter or sub_category_one_values[i][0] in selected_category_one) and \
+                (not is_subcategory2_filter or sub_category_two_values[i][0] in selected_category_two) and \
+                (not is_subcategory3_filter or sub_category_three_values[i][0] in selected_category_three):
                 for idx, value in enumerate(item['values']):
                     if 'userEnteredFormat' in value and 'textFormat' in value['userEnteredFormat'] and 'link' in value['userEnteredFormat']['textFormat']:
                         uri = value['userEnteredFormat']['textFormat']['link']['uri']
