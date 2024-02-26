@@ -104,11 +104,45 @@ def pdf_merger():
     test_range = sheet_name + "!" + "A" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "A" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     solutions_range = sheet_name + "!" + "F" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "F" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     
+    sub_category_one_range= sheet_name + "!" + "L" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "L" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
+    
     solutions_images_range = sheet_name + "!" + "E" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "E" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
-    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range,solutions_images_range]
+    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range,solutions_images_range,sub_category_one_range]
 
     
     category = ["HOA","PSDA","PAM","GEOM","Vocab","Big Picture","Reading for Function","Literal Comprehension","Text Completion","Supporting Evidence", "Graphs and Charts","Comma Uses and Misuses","Subject-verb agreement","Combining and Separating Sentences","Essential and Non-essential clauses","Transitions","Plain Text"]
+    sub_category_one = ['Linear Functions Part 1','Angles and Triangles','Intro to Functions','Linear Functions Part 2','Polynomial Expressions','Rational Expressions','Special Cases','Right Triangles & Trig',
+ 'Exponential Functions',
+ 'Quadratic Equations',
+ 'Isolating Variables',
+ 'Systems of Equations',
+ 'Linear Equations',
+ 'Interpreting Graph',
+ 'Two-Way Tables',
+ 'Scatter Plots',
+ 'Percents',
+ 'Unit Conversions',
+ 'Data and Stats 1',
+ 'Rates',
+ 'Rational Functions',
+ 'Quadratic & Polynomial Functions',
+ 'Linear vs. Exponential Functions',
+ 'Ratios',
+ 'Planar Geometry',
+ 'Solid Geometry',
+ 'Equation of a Circle',
+ 'Exponential Equations',
+ 'Absolute Value',
+ 'Probability',
+ 'Radical Equations',
+ 'Similar Triangles',
+ 'Linear Equations and Inequalities WP',
+ 'Parallel and Perpendicular Lines',
+ 'Circle Ratios',
+ 'Exponential & Radical Expressions',
+ 'Rational Equations',
+ 'Complex Numbers',
+ 'Data and Stats 2']
     difficulty = ["1","2","3","4","5"]
     correctness = {
         "Correct":"1",
@@ -116,30 +150,34 @@ def pdf_merger():
         }
     section = ["1","2","2E","2H","3","4"]
     
-    st.subheader("Filters")
+    st.subheader("Filter")
     selected_tests = set(st.multiselect("Practice Tests:", practice_tests))
     selected_difficulty = set(st.multiselect("Difficulty", difficulty))
     selected_category = set(st.multiselect("Category", category))
     
+    selected_category_one = set(st.multiselect("Sub-Category 1",sub_category_one))
     selected_correctness = set(st.multiselect("Correct or Incorrect", correctness.values()))
     
     selected_section = set(st.multiselect("Section/Module", section))
     download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
     filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
-
+    
+    print(f"Filtered Dataset: {filtered_dataset}")
     #store the values into individual array
     category_values = filtered_dataset['valueRanges'][0]['values']
     difficulty_values = filtered_dataset['valueRanges'][1]['values']
     section_values = filtered_dataset['valueRanges'][2]['values']
     correctness_values = filtered_dataset['valueRanges'][3]['values']
     test_values = filtered_dataset['valueRanges'][4]['values']
-    
+    sub_category_one_values = filtered_dataset['valueRanges'][7]['values']
+    print(f"Sub-Category One Values: {sub_category_one_values}") 
     # Flags to check if filters are active
     is_category_filter = len(selected_category) > 0
     is_difficulty_filter = len(selected_difficulty) > 0
     is_section_filter = len(selected_section) > 0
     is_correctness_filter = len(selected_correctness) > 0
     is_test_filter = len(selected_tests) > 0
+    is_subcategory1_filter = len(selected_category_one)
     save_dir = 'downloaded_pngs'
     #-----------------Normal Packet--------------------#
     if st.button("Generate PDF"):
@@ -170,7 +208,8 @@ def pdf_merger():
                 (not is_difficulty_filter or difficulty_values[idx][0] in selected_difficulty) and \
                 (not is_section_filter or section_values[idx][0] in selected_section) and \
                 (not is_correctness_filter or correctness_values[idx][0] in selected_correctness) and \
-                (not is_test_filter or test_values[idx][0] in selected_tests):
+                    (not is_test_filter or test_values[idx][0] in selected_tests) and \
+                    (not is_subcategory1_filter or sub_category_one_values[idx][0] in selected_category_one):
                     if 'hyperlink' in cell:
                         hyperlinks.append(cell['hyperlink'])     
                 
