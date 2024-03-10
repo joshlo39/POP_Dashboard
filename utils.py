@@ -10,6 +10,7 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.http import MediaIoBaseDownload
 import io
 from PIL import Image
+from googleapiclient.http import MediaFileUpload
 import pyrebase
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -206,3 +207,23 @@ def extract_images_from_pdf(pdf_path, output_folder):
                 cropped_img.save(f"{output_folder}/page_{page_number + 1}_quadrant_{i+1}_{j+1}.png")
 
     pdf_document.close()
+
+def create_drive_folder(drive_service, name, parent_id=None):
+    file_metadata = {
+        'name': name,
+        'mimeType': 'application/vnd.google-apps.folder'
+    }
+    if parent_id:
+        file_metadata['parents'] = [parent_id]
+    
+    folder = drive_service.files().create(body=file_metadata, fields='id').execute()
+    return folder.get('id')
+
+def upload_file_to_folder(drive_service, file_path, mime_type, folder_id):
+    file_metadata = {
+        'name': os.path.basename(file_path),
+        'parents': [folder_id]
+    }
+    media = MediaFileUpload(file_path, mimetype=mime_type)
+    file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    return file.get('id')
