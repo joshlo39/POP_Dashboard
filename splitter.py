@@ -10,6 +10,8 @@ def splitter():
     pdf_file = st.file_uploader("Upload a POP PDF file", type="pdf")
     
     image_folder_path = "./temp_images/"
+    if not os.path.exists(image_folder_path):
+        os.makedirs(image_folder_path)  
     if pdf_file is not None:
         # Create a temporary directory to save the PDF file
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -23,8 +25,6 @@ def splitter():
             # Now you can use the saved file path with your function
             extract_images_from_pdf(pdf_path,image_folder_path)
             
-        if not os.path.exists(image_folder_path):
-            os.makedirs(image_folder_path)  
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, 'a', zipfile.ZIP_DEFLATED) as zip_file:
             for image_file_name in os.listdir(image_folder_path):
