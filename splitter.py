@@ -49,7 +49,7 @@ def splitter():
         folder_name = st.text_input("Name of Folder: ")
         if st.button("Send to Drive") and folder_name:
             print("Sending to Drive...")
-            folder_id = create_drive_folder(drive_service, 'Test Folder', parent_id='11Q2QJQKN45aGdSe_pUsjyheI6T18y7IS')  # Replace 'My Folder Name' and parent_id as needed
+            folder_id = create_drive_folder(drive_service, folder_name, parent_id='11Q2QJQKN45aGdSe_pUsjyheI6T18y7IS')  # Replace 'My Folder Name' and parent_id as needed
             local_folder_path = save_dir  # Replace with the path to your local folder
             for filename in os.listdir(local_folder_path):
                 file_path = os.path.join(local_folder_path, filename)
