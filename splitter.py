@@ -57,7 +57,7 @@ def splitter():
             # Write the uploaded PDF file to the temporary file
             with open(pdf_path, "wb") as f:
                 f.write(pdf_file.getvalue())
-            # Now you can use the saved file path with your function
+
             # extract_images_from_pdf(pdf_path,image_folder_path)
             extract_images_from_pdf_2(pdf_path,image_folder_path,page_number_dict,pages_to_skip)
             

@@ -222,6 +222,7 @@ def extract_images_from_pdf_2(pdf_path, output_folder,single_problem_pages,skip_
 
         # Split the page into left and right halves
         width, height = img.size
+
         strip_width = width // 2
         strip_height = height // 2
 
@@ -245,9 +246,13 @@ def extract_images_from_pdf_2(pdf_path, output_folder,single_problem_pages,skip_
                 print(f"Page {page_number + 1} , Side {side}is a multi-problem strip")
                 #crop strip into two quadrants
                 for i in range(2):
-                    top = i * (height // 2)
-                    bottom = (i + 1) * (height // 2)
+                    if i == 1:
+                        top = (height // 2) -25
+                    else:
+                        top = i * (height // 2)#either at 0 or at half
+                    bottom = ((i + 1) * (height // 2)- 25)#either at half or at full 
                     quadrant_img = strip_img.crop((0, top, strip_width, bottom))
+
                     if side == "Right":
                         quadrant_img.save(f"{output_folder}/page_{page_number + 1}_{i+3}.png")
                     else:
