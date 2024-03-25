@@ -6,78 +6,23 @@ class Filters():
                     "Ptest #11 (201912U)","Ptest #12 (202009A)","Ptest #13 (202008A)","Ptest #14 (201911U)",
                     "Ptest #15 (202105U)","Ptest #16 (201905U)","Ptest #17 (201910U)","Ptest #18 (201905A)",
                     "Ptest #19 (201903U)","Ptest #20 (202105A)","Ptest #21 (202306U)","Ptest #22 (202304SD)",
-                      "Ptest #23 (202305U)","D Practice Test #1", "D Practice Test #2", "D Practice Test #3","D Practice Test #4",
-
-                      "NL Practice Test #1","NL Practice Test #2","NL Practice Test #3","NL Practice Test #4"]
+                    "Ptest #23 (202305U)","D Practice Test #1", "D Practice Test #2", "D Practice Test #3","D Practice Test #4",
+                    "D Practice Test #5","D Practice Test #6","CBQB","NL Practice Test #1","NL Practice Test #2","NL Practice Test #3"
+                    ,"NL Practice Test #4"]
         self.category = ["HOA","PSDA","PAM","GEOM","Vocab","Big Picture","Reading for Function","Literal Comprehension","Text Completion","Supporting Evidence", "Graphs and Charts","Comma Uses and Misuses","Subject-verb agreement","Combining and Separating Sentences","Essential and Non-essential clauses","Transitions","Plain Text"]
-        self.sub_category_one = ['Linear Functions Part 1','Angles and Triangles','Intro to Functions','Linear Functions Part 2','Polynomial Expressions','Rational Expressions','Special Cases','Right Triangles & Trig','Exponential Functions','Quadratic Equations',
-        'Isolating Variables',
-        'Systems of Equations',
-        'Linear Equations',
-        'Interpreting Graph',
-        'Two-Way Tables',
-        'Scatter Plots',
-        'Percents',
-        'Unit Conversions',
-        'Data and Stats 1',
-        'Rates',
-        'Rational Functions',
-        'Quadratic & Polynomial Functions',
-        'Linear vs. Exponential Functions',
-        'Ratios',
-        'Planar Geometry',
-        'Solid Geometry',
-        'Equation of a Circle',
-        'Exponential Equations',
-        'Absolute Value',
-        'Probability',
-        'Radical Equations',
-        'Similar Triangles',
-        'Linear Equations and Inequalities WP',
-        'Parallel and Perpendicular Lines',
-        'Circle Ratios',
-        'Exponential & Radical Expressions',
-        'Rational Equations',
-        'Complex Numbers',
-        'Data and Stats 2']
-        self.sub_category_two =[
-            "Deriving Equation", "Parallel Lines & Transversals", "Evaluating", "Deriving Inequality", "Adding/Subtracting",
-            "POG", "Dividing", "Linear Equations", "Pythagorean", "Finding y-int", "SOS",
-            "NA", "Finding Slope", "Substitution", "Factoring", "Fractions & Decimals", "45-45-90",
-            "Line Graph", "Fraction of", "Predicted Value", "Percent of", "Single Conversion", "Median",
-            "Interpreting", "Deriving Graph", "30-60-90", "Mixed", "Word Problem", "Factored Form",
-            "Unit Circle", "Probability", "Number of Solutions", "Special Cases", "Elimination", "Direct Proportionality",
-            "Finding Area", "Greater/Less than", "Intercepts", "Finding Volume", "Adding & Subtracting", "Quadratic Formula",
-            "Shift", "Base Reduction", "Distributing", "Finding Perimeter", "Solving", "Mean",
-            "Data Set", "Basic", "Range", "Multiplying", "Comparing", "Standard Form",
-            "Congruency", "Create & Solve", "Systems of Equations", "sinx=cosy", "Interpreting Equation", "Percent Inc/Dec",
-            "Cubic", "Proportions", "OG", "Finding Arc Length", "Interpreting Graph", "Vertex Form",
-            "Inequality Graph", "Isosceles", "Product Rule", "Linear Combination", "Trig", "Actual vs. Predicted",
-            "Percent Change", "Sub & Solve", "Pie Chart", "Population Density", "Finding Length", "Tangent Line",
-            "Standard Deviation", "Rate to Rate", "Classic", "Proof", "Easy", "General Form",
-            "Radical to Exponential", "Sum of Solutions", "Finding Solution", "Outlier", "Skew", "Definition",
-            "Reverse", "Square Root Method", "Graph", "Cylinder", "Linear Function", "Quadratic Function",
-            "Finding Surface Area", "Finding x-int", "Constants", "Rectangular Prism", "Create & Sub", "Triple",
-            "Hard", "Finding Area of Shaded Region", "Triangles", "Average Speed", "Inequality", "Finding Ratio",
-            "Fractions", "Long Division", "PTSI", "Double Conversion", "How many times", "Bar Graph",
-            "Finding Radius", "Reading Graph", "Arc Length and Angle", "Equation", "Extraneous Solutions", "Area",
-            "Vertical Angles", "Angle sum of Quadrilaterals", "Zeros from equation", "Quotient Rule", "Directly Proportional", "Margin of Error",
-            "Sample Selection", "Likelihood", "Proving", "Finding Width", "Degrees and Radians", "Create Equation & Solve",
-            "Right Triangle", "Percent Mixed", "Finding Value", "Solving for x", "Volume", "Parallel",
-            "Single", "Finding Intercepts", "Deriving Table", "Ratio", "Finding intercepts", "Perpendicular",
-            "Finding Arc Measure", "Proportion", "Max", "y-int", "Radians & Degrees", "Pythagorean Theorem",
-            "Multi-Dimensional", "Radical as well", "Finding Predicted y-value", "Perimeter", "Complex", "Surface Area",
-            "Radical to Exponential ", "x-int", "Density", "POS", "Deriving Expression", "Min", "Comparing Means", "Finding Angle", "Square root method"
-        ]
-        self.sub_category_three = [
-            "Table", "Finding Angle", "f(a)", "NA", "Slope-Intercept Form", "Table to Graph", "Perfect Square", "Points", "Infinitely Many Solutions", "Trapezoid", "Equation", "Factoring", "Word Problem", "Graph", "Factored Form", "Square", "Part", "Box-Plot", "Whole", "Frequency Table", "Standard Form", "Inequality", "Triangle + Kite", "Bar Graph", "Finding vertex", "Scatter Plots", "Constants", "Unit Circle", "Elimination", "Discriminant", "Finding x-int", "No Solution", "Data Set", "Parallelogram", "Diameter", "Right Triangle", "Decimals", "Asymptote", "Ratio & Area", "Trick", "Deriving Graph", "Trig", "Perpendicular", "One-Variable", "New", "Percent Inc/Dec", "Dot Plot", "Percent", "Function Notation", "Deriving Equation", "One Solution", "Proving", "Geometric Mean", "Decrease", "Quadratic Equation", "Finding Radius", "Rectangle", "Frequency", "Substitution", "Line Graph", "If", "A>1", "Rate to Rate", "Interpreting", "Finding Sine and Cosine", "How Many Times", "Increase", "Finding Sine", "Distributing negative", "Unit Conversion", "Finding Ratio", "Product Rule", "Ratio", "Finding Center", "A=1", "f(0)", "Extraneous Solutions", "y-int", "Interpreting intercept", "Cylinder", "Finding Cosine", "Square Root Method", "Quadratic Formula", "Outer-Inner", "Hour Glass", "Finding Sine and Tangent", "Difference of Squares", "Finding Circumference", "Mixed", "y", "Finding Solution", "Vertex Form", "Area", "Finding Sum of x-coordinates", "Radical to Exponential", "Initial Amount", "Rationalizing", "Radius and Angle", "U-Sub", "y-value", "Triangle", "f(x)=a", "Solving", "Scale", "Circle", "Finding Side Length", "PTSI", "Distributing Negative", "Finding y-value", "Sphere", "f(x)=0", "Finding Perimeter", "x", "Rate of Change", "Proof", "X^4", "Triangle and Circle", "Reading Graph", "Equations", "Cube", "Standard to General Form", "Cylinder and Sphere", "Equation and Point", "Dividing", "Shift", "Grouping", "Absolute Value", "Adding & Subtracting", "Rectangle and Semi-Circle", "Finding Max", "Form", "Radius", "Diff of Squares", "PFT", "Constants", "GCF", "Slope and Point", "Right Triangles", "Deriving", "Rectangular Prism", "Sub and Solve", "Definition", "Cone", "Finding Area", "a=1", "Linear", "Cosine", "Finding Vertex", "Sub & Solve", "Word Problems", "One-Step", "x=a", "From Equation", "Tangent", "Infinitely Many", "Both", "Isosceles Right Triangle", "Similarity", "a>1", "Function", "Sine", "Time", "Finding Slope", "Exponential Function", "Radians to degrees", "x-int", "POG", "Angle", "Squared", "Two-Step", "Exponential", "Factored", "From Graph", "Inscribed Square", "Histogram", "Rate Word Problem", "How many times", "Quadratic Function", "Single", "Percent of", "Combined Mean", "Finding x", "Max", "Radians to Degrees", "Find height", "Directly Proportional", "Finding y", "Initial", "Outer - Inner", "Finding Diameter", "Rate word problem", "System of Inequality", "Classic", "Deriving Table", "Double Bubble", "Factor by grouping", "Multi-step", "Exponential Functions", "Isosceles Triangle", "Solving for y", "Finding Constants", "Percent greater"
-        ]
-        self.difficulty = ["1","2","3","4","5"]
+
+        self.sub_category_one = ['Absolute Value','Angles and Triangles','Circle Ratios','Complex Numbers','Data and Stats 1','Data and Stats 2','Equation of a Circle','Exponential & Radical Expressions','Exponential Equations','Exponential Functions','Interpreting Graph','Intro to Functions','Isolating Variables','Linear Equations','Linear Equations and Inequalities WP','Linear Functions Part 1','Linear Functions Part 2','Linear vs. Exponential Functions','NA','Parallel and Perpendicular Lines','Percents','Planar Geometry','Polynomial Expressions','Probability','Quadratic & Polynomial Functions','Quadratic Equations','Radical Equations','Rates','Rational Equations','Rational Expressions','Rational Functions','Ratios','Right Triangles & Trig','Scatter Plots','Similar Triangles','Solid Geometry','Special Cases','Systems of Equations','Two-Way Tables','Unit Conversions']
+        self.sub_category_two = ['30-60-90','45-45-90','Actual vs. Predicted','Adding & Subtracting','Adding/Subtracting','Algebraic Expression','Angle sum of Quadrilaterals','Arc Length and Angle','Area','Average Rate of Change','Average Speed','Bar Graph','Base Reduction','Basic','Circles','Circumference','Classic','Comparing','Comparing Means','Complex','Congruency','Constants','Create & Solve','Create & Sub','Create Equation & Solve','Cubic','Cylinder','Data Set','Definition','Degrees and Radians','Density','Deriving','Deriving Equation','Deriving Expression','Deriving Graph','Deriving Inequality','Deriving Table','Direct Proportionality','Directly Proportional','Distributing','Dividing','Double','Double Conversion','Easy','Elimination','Equation','Evaluating','Evaluating Functions','Extraneous Solutions','Factored Form','Factoring','Finding Angle','Finding Arc Length','Finding Arc Measure','Finding Area','Finding Area of Shaded Region','Finding Intercepts','Finding Length','Finding Perimeter','Finding Predicted y-value','Finding Radius','Finding Rate','Finding Ratio','Finding Slope','Finding Solution','Finding Surface Area','Finding Volume','Finding Width','Finding x-int','Finding y-int','Fraction of','Fractions','Fractions & Decimals','General Form','Graph','Greater/Less than','Hard','How many times','Inequality','Inequality Graph','Inference','Intepreting Equation','Intercepts','Interpreting','Interpreting Equation','Interpreting Functions','Interpreting Graph','Interpreting Point','Isosceles','Likelihood','Line Graph','Linear Combination','Linear Equations','Linear Function','Long Division','MIxed','Margin of Error','Max','Mean','Median','Min','Mixed','Multi-Dimensional','Multiplying','NA','Number of Solutions','OG','Outer-Inner','Outlier','POG','POS','PTSI','Parallel','Parallel Lines & Transversals','Parallel Lines and Transversals','Percent','Percent Change','Percent Inc/Dec','Percent Increase','Percent Mixed','Percent of','Perimeter','Perpendicular','Pie Chart','Point','Population Density','Population Estimate','Predicted Value','Probability','Product Rule','Proof','Proportion','Proportions','Proving','Pythagorean','Pythagorean Theorem','Quadratic Formula','Quadratic Function','Quotient Rule','Radians & Degrees','Radical as well','Radical to Exponential','Range','Rate of Change','Rate to Rate','Ratio','Reading Graph','Rectangular Prism','Reverse','Right Triangle','SOS','Sample Selection','Scale Factor','Shift','Single','Single Conversion','Skew','Solving','Solving for x','Special Cases','Square Root Method','Square root method','Standard Deviation','Standard Form','Standard Form Graph','Sub & Solve','Substitution','Sum of Solutions','Surface Area','Systems of Equations','Tangent Line','Triangles','Trick','Trig','Triple','Unit Circle','Vertex Form','Vertical Angles','Volume','Word Problem','Word Problems','Zeros from equation','crazy shit','sinx=cosy','x-int','y-int']
+
+        self.sub_category_three = ['A=1','A>1','Absolute Value','Adding & Subtracing','Angle','Area','Asymptote','Bar Graph','Basic','Bias','Both','Box-Plot','Circle','Classic','Combined Mean','Cone','Constants','Conversion','Cosine','Create & Solve','Create and Solve','Cube','Cube & Cylinder','Cup','Cylinder','Cylinder and Sphere','Data Conclusion','Data Set','Decay Factor','Decimals','Decrease','Definition','Deriving','Deriving Equation','Deriving Graph','Deriving Table','Diameter','Diff of Squares, PFT, Constants','Difference of Squares','Directly Proportional','Discriminant','Distributing','Distributing Negative','Distributing negative','Dividing','Dot Plot','Double Bubble','Double-Bubble','Elimination','Equation','Equation and Point','Equations','Exponential','Exponential Function','Exponential Functions','Extraneous Solutions','Factor by grouping','Factored','Factored Form','Factoring','Find height','Finding Angle','Finding Area','Finding Center','Finding Circumference','Finding Constants','Finding Cosine','Finding Diameter','Finding Max','Finding Perimeter','Finding Radius','Finding Ratio','Finding Side Length','Finding Sine','Finding Sine and Cosine','Finding Sine and Tangent','Finding Slope','Finding Solution','Finding Sum of x-coordinates','Finding Vertex','Finding vertex','Finding x','Finding x-int','Finding y','Finding y-value','Form','Fractions & Decimals','Frequency','Frequency Table','From Equation','From Graph','Function','Function Notation','GCF','Generalization','Geometric Mean','Given Center and Radius','Graph','Grouping','Histogram','Hour Glass','How Many Times','How many times','If','Increase','Inequality','Infinitely Many','Infinitely Many Solutions','Initial','Initial Amount','Inscribed Square','Interior of Circle','Interpreting','Interpreting intercept','Isosceles Right Triangle','Isosceles Triangle','Line Graph','Linear','Max','Mixed','Multi-step','NA','New','No Solution','No Solutions','One Solution','One-Step','One-Variable','Outer - Inner','Outer-Inner','POG','PST','PTSI','Parallelogram','Part','Percent','Percent Inc/Dec','Percent greater','Percent of','Perfect Square','Perpendicular','Points','Product Rule','Proof','Proving','Quadratic Equation','Quadratic Formula','Quadratic Function','Radians to Degrees','Radians to degrees','Radical to Exponential','Radius','Radius and Angle','Rate Word Problem','Rate of Change','Rate to Rate','Rate word problem','Ratio','Ratio & Area','Rationalizing','Reading Graph','Rectangle','Rectangle and Semi-Circle','Rectangular Prism','Right Triangle','Right Triangles','Scale','Scatter Plots','Shift','Similarity','Sine','Single','Slope and Point','Slope-Intercept Form','Slope-Intercept From','Solving','Solving for y','Special Cases','Sphere','Square','Square & Circle','Square Root Method','Squared','Standard Form','Standard to General Form','Sub & Solve','Sub and Solve','Sub-Category 3','Substitution','System of Inequality','Table','Table to Graph','Tangent','Tangent to axis','Time','Trapezoid','Triangle','Triangle + Kite','Triangle and Circle','Triangular Prism','Trick','Trig','Two-Step','U-Sub','Unit Circle','Unit Conversion','Vertex Form','Vertext Form','Whole','Word Probem','Word Problem','X^4','a:b','a=1','a>1','f(0)','f(a)','f(a)=b','f(x)=0','f(x)=a','x','x-int','x=a','x^4','xi-int','y','y-int','y-value']
+
+        self.difficulty = ["easy","medium", "hard", "1","2","3","4","5"]
         self.correctness = {
                 "Correct":"1",
                 "Incorrect":"0"
                 }
         self.section = ["1","2","2E","2H","3","4"]
             
+        self.calculator = ["Desmos","TI","Casio","Desmos, TI","Desmos, Casio","Desmos, Casio, TI","Casio, TI"]
 
     

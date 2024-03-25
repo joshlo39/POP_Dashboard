@@ -48,7 +48,7 @@ def pdf_merger():
     filterData = Filters()
     student_names = Names()
     st.title("Peace of Pi: PDF Merger")
-    default_sheet = "Practice Test Analysis!C2:C1335"
+    default_sheet = "Practice Test Analysis!C2:C3026"
     range_name = st.text_input("Enter the name of the sheet and the range of cells you want to download:"
                             ,value = default_sheet)
     default_URL = "https://docs.google.com/spreadsheets/d/1RjkWwLxLb9dk8OjNYY6CwxTw4NXOaTO955qKuslNgBE/edit#gid=0"
@@ -79,8 +79,10 @@ def pdf_merger():
     sub_category_two_range= sheet_name + "!" + "M" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "M" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     sub_category_three_range= sheet_name + "!" + "N" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "N" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     solutions_images_range = sheet_name + "!" + "E" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "E" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
+    calulator_range = sheet_name + "!" + "P" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "P" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
 
-    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range,solutions_images_range,sub_category_one_range,sub_category_two_range,sub_category_three_range]
+
+    range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range,solutions_images_range,sub_category_one_range,sub_category_two_range,sub_category_three_range,calulator_range]
 
     category = filterData.category    
     sub_category_one = filterData.sub_category_one
@@ -89,7 +91,8 @@ def pdf_merger():
     difficulty = filterData.difficulty
     correctness = filterData.correctness
     section = filterData.section
-     
+    calculator = filterData.calculator 
+
     st.subheader("Filter")
     selected_tests = set(st.multiselect("Practice Tests:", practice_tests))
     selected_difficulty = set(st.multiselect("Difficulty", difficulty))
@@ -99,10 +102,10 @@ def pdf_merger():
     selected_category_three = set(st.multiselect("Sub-Category 3",sub_category_three))
     selected_correctness = set(st.multiselect("Correct or Incorrect", correctness.values()))
     selected_section = set(st.multiselect("Section/Module", section))
+    selected_calculator = set(st.multiselect("Calculator", calculator))
 
     download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
     filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
-    
     #store the values into individual array
     category_values = filtered_dataset['valueRanges'][0]['values']
     difficulty_values = filtered_dataset['valueRanges'][1]['values']
@@ -112,6 +115,7 @@ def pdf_merger():
     sub_category_one_values = filtered_dataset['valueRanges'][7]['values']
     sub_category_two_values = filtered_dataset['valueRanges'][8]['values'] 
     sub_category_three_values = filtered_dataset['valueRanges'][9]['values']
+    calculator_values = filtered_dataset['valueRanges'][10]['values']
 
     # Flags to check if filters are active
     is_category_filter = len(selected_category) > 0
@@ -122,6 +126,8 @@ def pdf_merger():
     is_subcategory1_filter = len(selected_category_one) > 0
     is_subcategory2_filter = len(selected_category_two) > 0
     is_subcategory3_filter = len(selected_category_three) > 0
+    is_calculator_filter = len(selected_calculator) > 0
+
     save_dir = 'downloaded_pngs'
 
     #-----------------Normal Packet--------------------#
@@ -154,7 +160,8 @@ def pdf_merger():
                     (not is_test_filter or test_values[idx][0] in selected_tests) and \
                     (not is_subcategory1_filter or sub_category_one_values[idx][0] in selected_category_one) and \
                     (not is_subcategory2_filter or sub_category_two_values[idx][0] in selected_category_two) and \
-                    (not is_subcategory3_filter or sub_category_three_values[idx][0] in selected_category_three):
+                    (not is_subcategory3_filter or sub_category_three_values[idx][0] in selected_category_three) and \
+                    (not is_calculator_filter or calculator_values[idx][0] in selected_calculator):
                     if 'hyperlink' in cell:
                         hyperlinks.append(cell['hyperlink'])     
                 
@@ -185,9 +192,6 @@ def pdf_merger():
 
         #video hyperlinks comes in order
         #images don't come in order 
-        print(f"Length of Video Hyperlink", len(video_hyperlinks))
-        for idx,uri in enumerate(video_hyperlinks):
-           print(f'Index: {idx}, URI: {uri}') 
         #------Images------#
         image_paths = []
         inner_array = []
@@ -275,7 +279,8 @@ def pdf_merger():
                 (not is_test_filter or test_values[idx][0] in selected_tests) and \
                 (not is_subcategory1_filter or sub_category_one_values[idx][0] in selected_category_one) and \
                 (not is_subcategory2_filter or sub_category_two_values[idx][0] in selected_category_two) and \
-                (not is_subcategory3_filter or sub_category_three_values[idx][0] in selected_category_three):
+                (not is_subcategory3_filter or sub_category_three_values[idx][0] in selected_category_three) and \
+                (not is_calculator_filter or calculator_values[idx][0] in selected_calculator):
                     if 'hyperlink' in cell:
                         hyperlinks.append(cell['hyperlink'])     
                 
@@ -305,7 +310,6 @@ def pdf_merger():
         #-----------------Getting all video link--------------------#
         video_hyperlinks = [] 
         for i, item in enumerate(solution_data):
-            print(f"Category Index: {i}, Value: {category_values[i][0]}")
             if (not is_category_filter or category_values[i][0] in selected_category) and \
                 (not is_difficulty_filter or difficulty_values[i][0] in selected_difficulty) and \
                 (not is_section_filter or section_values[i][0] in selected_section) and \
