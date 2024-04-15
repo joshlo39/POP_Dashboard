@@ -326,7 +326,7 @@ def pdf_merger():
                         video_hyperlinks.append(uri)
                     else:
                         #if there is no hyperlink, then add a default hyperlink
-                        video_hyperlinks.append('https://www.youtube.com/watch?v=v7ScGV5128A')
+                        video_hyperlinks.append('https://www.youtube.com/watch?v=B_OhHIja95g')
         #video hyperlinks comes in order
         #images don't come in order 
         print(f"video_hyperlinks", video_hyperlinks)
@@ -342,7 +342,7 @@ def pdf_merger():
         for idx, filename in enumerate(file_names):
             if filename.endswith(".png"):
                 filepath = os.path.join(save_dir, filename)
-                inner_array.append((filepath, (f" ", video_hyperlinks[idx] if len(video_hyperlinks) > 0 else 'https://www.youtube.com/watch?v=v7ScGV5128A')))
+                inner_array.append((filepath, (f" ", video_hyperlinks[idx] if len(video_hyperlinks) > 0 else 'https://www.youtube.com/watch?v=B_OhHIja95g')))
                 
                 if len(inner_array) == 4:
                     image_paths.append(sorted(inner_array))
