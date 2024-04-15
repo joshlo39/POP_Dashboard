@@ -196,10 +196,13 @@ def pdf_merger():
         image_paths = []
         inner_array = []
         file_names = [f for f in os.listdir(save_dir) if f != 'random.txt'] 
+
         if 'merged.pdf' in file_names:
             file_names.remove('merged.pdf')
+
         file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
-        get_rick_rolled= "https://www.youtube.com/watch?v=v7ScGV5128A"
+        get_rick_rolled = "https://www.youtube.com/watch?v=B_OhHIja95g"
+
         for idx, filename in enumerate(file_names):
             if filename.endswith(".png"):
                 print(f"Index: {idx}, Filename: {filename}, URI: {get_rick_rolled}")

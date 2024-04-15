@@ -19,7 +19,6 @@ from reportlab.lib.pagesizes import letter
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.lib.colors import red  
 import fitz #PyMuPdf
-#need to add to requirements.txt
 import re
 
 def add_skip_page_form():
@@ -74,6 +73,7 @@ def download_drive_file(service, file_id, save_path):
             done = False
             while done is False:
                 status, done = downloader.next_chunk()
+
 def smart_sort(arr):
     arr.sort(key=lambda x: int(x.split('-')[0]))
     return arr
@@ -103,7 +103,11 @@ def create_pdf_with_2x2_images_hyperlinks(output_pdf_path, image_details, max_im
             y = (page_height / 2) * (1 - (image_idx // 2))
 
             # Open and resize the image
-            img = Image.open(image_path)
+            try:
+                img = Image.open(image_path)
+            except:
+                print(f"Error opening image {image_path}")
+                os.remove(image_path)
             img_width, img_height = img.size
             
             scale = min(max_image_width / img_width,max_image_height / img_height)
@@ -136,7 +140,7 @@ def create_pdf_with_2x2_images_hyperlinks_small_hyperlink(output_pdf_path, image
     c = canvas.Canvas(output_pdf_path, pagesize=letter)
     page_width, page_height = letter
     print(f"page_width: {page_width}, page_height: {page_height}")
-
+    save_dir = "downloaded_pngs/"
     for page_idx, page_content in enumerate(image_details):
         for image_idx, (image_path, hyperlink) in enumerate(page_content):
             # Calculate image position
@@ -144,7 +148,12 @@ def create_pdf_with_2x2_images_hyperlinks_small_hyperlink(output_pdf_path, image
             y = (page_height / 2) * (1 - (image_idx // 2))
 
             # Open and resize the image
-            img = Image.open(image_path)
+            try:
+                img = Image.open(image_path)
+            except:
+                print(f"Error opening image {image_path}")
+                os.remove(image_path)
+
             img_width, img_height = img.size
             
             scale = min(max_image_width / img_width,max_image_height / img_height)
