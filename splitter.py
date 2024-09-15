@@ -10,9 +10,13 @@ from utils import *
 from genericpath import isfile
 
 def splitter():
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive',]
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 
+              'https://www.googleapis.com/auth/drive',
+              'https://www.googleapis.com/auth/drive.file']
+    DELEGATED_EMAIL = 'renan@peaceofpilearning.com'
     creds = Credentials.from_service_account_file('service_credentials.json', scopes=SCOPES)
-    drive_service = build('drive', 'v3', credentials=creds)
+    delegated_credentials = creds.with_subject(DELEGATED_EMAIL)
+    drive_service = build('drive', 'v3', credentials=delegated_credentials)
     sheets_service = build('sheets', 'v4', credentials=creds)
     first_page = False
     st.header("PDF Splitter")

@@ -328,11 +328,17 @@ def get_cell_content(sheet_service,spreadsheet_id, range_name):
         return values
 
 def upload_file_to_folder(drive_service, file_path, mime_type, folder_id):
+    pop_email = "renan@peaceofpilearning.com"
     file_metadata = {
         'name': os.path.basename(file_path),
         'parents': [folder_id]
     }
     media = MediaFileUpload(file_path, mimetype=mime_type)
+    permission = {
+        'type': 'user',
+        'role': 'writer',
+        'emailAddress': pop_email
+    }
     file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
 
     #Sets the permission of the file to anyone with the link
