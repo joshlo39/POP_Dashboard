@@ -66,6 +66,7 @@ def pdf_merger():
      
                     
     #-----------------Settup--------------------#
+    # This is where the sheet columns have to match the input box label 
     practice_tests = filterData.practice_tests
 
     sheet_name = range_name.split("!")[0]
@@ -81,9 +82,11 @@ def pdf_merger():
     solutions_images_range = sheet_name + "!" + "E" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "E" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     calulator_range = sheet_name + "!" + "P" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "P" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
 
-
+ 
+    #Array of ranges 
     range_list = [category_range, difficulty_range, section_range, correctness_range,test_range,solutions_range,solutions_images_range,sub_category_one_range,sub_category_two_range,sub_category_three_range,calulator_range]
 
+    #variable to store the hardcoded values for each dropdown
     category = filterData.category    
     sub_category_one = filterData.sub_category_one
     sub_category_two = filterData.sub_category_two
@@ -104,8 +107,10 @@ def pdf_merger():
     selected_section = set(st.multiselect("Section/Module", section))
     selected_calculator = set(st.multiselect("Calculator", calculator))
 
+    #Hit sheet api and pass in the range of cells to grab the data from 
     download_result = sheets_service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=range_name, includeGridData=True).execute()
     filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
+
     #store the values into individual array
     category_values = filtered_dataset['valueRanges'][0]['values']
     difficulty_values = filtered_dataset['valueRanges'][1]['values']
