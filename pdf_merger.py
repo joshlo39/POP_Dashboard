@@ -138,6 +138,10 @@ def pdf_merger():
     #-----------------Normal Packet--------------------#
     if st.button("Generate PDF"):
         hyperlinks = []
+
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+
         for filename in os.listdir(save_dir):
             if filename.endswith(".png"):
                 os.remove(os.path.join(save_dir, filename))
