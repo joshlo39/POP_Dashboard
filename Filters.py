@@ -1,7 +1,9 @@
+from utils import load_practice_test
 class Filters():
     def __init__(self):
+        json_file_path = "practice_tests.json"
         #To add new entries in a category, add to corresponding array
-        self.practice_tests = ["Ptest #1 (202003U)","Ptest #2 (202012A)","Ptest #3 (202010A)",
+        self.practice_tests = load_practice_test(json_file_path) or ["Ptest #1 (202003U)","Ptest #2 (202012A)","Ptest #3 (202010A)",
                     "Ptest #4 (202011U)","Ptest #5 (202012U)","Ptest #6 (202009U)",
                     "Ptest #7 (202010SD)","Ptest #8 (202010U)","Ptest #9 (202103A)","Ptest #10 (202103U)",
                     "Ptest #11 (201912U)","Ptest #12 (202009A)","Ptest #13 (202008A)","Ptest #14 (201911U)",

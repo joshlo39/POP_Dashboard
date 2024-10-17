@@ -95,7 +95,17 @@ def pdf_merger():
     correctness = filterData.correctness
     section = filterData.section
     calculator = filterData.calculator 
-
+    if 'practice_tests' not in st.session_state:
+        st.session_state['practice_tests'] = practice_tests.copy()
+        
+    new_test = st.text_input("Add a new practice test:")
+    if st.button("Add Test"):
+        if new_test:
+            st.session_state['practice_tests'].append(new_test)
+            save_practice_tests(st.session_state['practice_tests'], 'practice_tests.json')
+            st.success(f"Added {new_test} to the list of practice tests!")
+        else:
+            st.error("Practice Test not saved")
     st.subheader("Filter")
     selected_tests = set(st.multiselect("Practice Tests:", practice_tests))
     selected_difficulty = set(st.multiselect("Difficulty", difficulty))

@@ -20,6 +20,8 @@ from PyPDF2 import PdfReader, PdfWriter
 from reportlab.lib.colors import red  
 import fitz #PyMuPdf
 import re
+from typing import List
+import json
 
 def add_skip_page_form():
     if 'skip_pages' not in st.session_state:
@@ -380,9 +382,16 @@ def sort_files_by_page_number(file_names, first_page=False):
     # Sort the list by page number
     sorted_files = [file_name for _, file_name in sorted(page_number_file_mapping)]
     return sorted_files
+def load_practice_test(json_file_path:str) -> List[str]:
+    if os.path.exists(json_file_path):
+        with open(json_file_path, 'r') as f:
+            return json.load(f)
+    else:
+        return []
 
-
-
+def save_practice_tests(practice_tests:List[str], json_file_path:str):
+    with open(json_file_path, 'w') as f:
+        json.dump(practice_tests, f)
 
 
 
