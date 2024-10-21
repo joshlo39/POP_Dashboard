@@ -100,7 +100,6 @@ def pdf_merger():
         st.session_state['practice_tests'] = practice_tests.copy()
     number_of_pages = st.number_input("Number of pages per PDF", min_value=1, value=4)
 
-    horizontal = st.checkbox("Horizontal")
     new_test = st.text_input("Add a new practice test:")
     if st.button("Add Test"):
         if new_test:
@@ -241,9 +240,7 @@ def pdf_merger():
         if inner_array:
             image_paths.append(inner_array)
 
-        if horizontal and number_of_pages == 1:
-            create_pdf_one_question_per_page_landscape('downloaded_pngs/merged.pdf', image_paths )
-        elif number_of_pages == 4:
+        if number_of_pages == 4:
             create_pdf_with_2x2_images_hyperlinks_small_hyperlink('downloaded_pngs/merged.pdf', image_paths )
         elif number_of_pages == 2:
             create_pdf_two_questions_per_page('downloaded_pngs/merged.pdf', image_paths )
