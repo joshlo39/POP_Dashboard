@@ -48,10 +48,10 @@ def pdf_merger():
     filterData = Filters()
     student_names = Names()
     st.title("Peace of Pi: PDF Merger")
-    default_sheet = "Practice Test Analysis!C2:C3026"
+    default_sheet = "Sheet1!C2:C2458"
     range_name = st.text_input("Enter the name of the sheet and the range of cells you want to download:"
                             ,value = default_sheet)
-    default_URL = "https://docs.google.com/spreadsheets/d/1RjkWwLxLb9dk8OjNYY6CwxTw4NXOaTO955qKuslNgBE/edit#gid=0"
+    default_URL = "https://docs.google.com/spreadsheets/d/1oos0L31aEqjPWYuF4ey23AbAs_8X8HJjPSJgFDmTuRs/edit?gid=0#gid=0"
     range_name = range_name.upper()
     spreadsheet_url = st.text_input("Enter the URL of the spreadsheet:"
                                     ,value = default_URL)
@@ -94,10 +94,13 @@ def pdf_merger():
     difficulty = filterData.difficulty
     correctness = filterData.correctness
     section = filterData.section
-    calculator = filterData.calculator 
+    calculator = filterData.calculator
+
     if 'practice_tests' not in st.session_state:
         st.session_state['practice_tests'] = practice_tests.copy()
-        
+    number_of_pages = st.number_input("Number of pages per PDF", min_value=1, value=4)
+
+    horizontal = st.checkbox("Horizontal")
     new_test = st.text_input("Add a new practice test:")
     if st.button("Add Test"):
         if new_test:
@@ -106,6 +109,7 @@ def pdf_merger():
             st.success(f"Added {new_test} to the list of practice tests!")
         else:
             st.error("Practice Test not saved")
+
     st.subheader("Filter")
     selected_tests = set(st.multiselect("Practice Tests:", practice_tests))
     selected_difficulty = set(st.multiselect("Difficulty", difficulty))
@@ -122,6 +126,7 @@ def pdf_merger():
     filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
 
     #store the values into individual array
+    print(f"Filtered Dataset: {filtered_dataset['valueRanges'][7]['values']}")
     category_values = filtered_dataset['valueRanges'][0]['values']
     difficulty_values = filtered_dataset['valueRanges'][1]['values']
     section_values = filtered_dataset['valueRanges'][2]['values']
@@ -235,28 +240,18 @@ def pdf_merger():
         #if there is a non-full page of images, then append it to the end of the outer array
         if inner_array:
             image_paths.append(inner_array)
-        for idx,page in enumerate(image_paths):
-            print(f"Page Index:{idx}")
-            for image in page:
-                print(f"Image Tuple: {image}")
-        
-        
-        #------Video Hyperlinks------#
-        #i dont think i use this
-        # hyperlink_details = [[]]
-        # for idx, url in enumerate(hyperlinks):
-        #     hyperlink_details[0].append(())
-            
-        
-        # print(f"hyperlink_details", hyperlink_details)
-        #create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
-        create_pdf_with_2x2_images_hyperlinks_small_hyperlink('downloaded_pngs/merged.pdf', image_paths )
-        
-        # pdf_path = os.path.join(save_dir,'merged.pdf')
-        # if len(images) > 0:
-        #     images[0].save(pdf_path, save_all=True, append_images=images[1:])
-        # else:
-        #     st.error("No images to merge")
+
+        if horizontal and number_of_pages == 1:
+            create_pdf_one_question_per_page_landscape('downloaded_pngs/merged.pdf', image_paths )
+        elif number_of_pages == 4:
+            create_pdf_with_2x2_images_hyperlinks_small_hyperlink('downloaded_pngs/merged.pdf', image_paths )
+        elif number_of_pages == 2:
+            create_pdf_two_questions_per_page('downloaded_pngs/merged.pdf', image_paths )
+        elif number_of_pages == 1:
+            create_pdf_one_question_per_page('downloaded_pngs/merged.pdf', image_paths )
+        else:
+            st.error("Invalid number of pages per PDF")
+
 
         # Delete images from folder
         for filename in os.listdir(save_dir):
@@ -277,6 +272,10 @@ def pdf_merger():
             if filename.endswith(".pdf"):
                 os.remove(os.path.join(save_dir, filename))
 #-----------------End of Normal Packet--------------------#
+
+
+
+
 
 #-----------------Solutions Packet--------------------#      
     if st.button("Generate Solutions"):
@@ -346,11 +345,6 @@ def pdf_merger():
                     else:
                         #if there is no hyperlink, then add a default hyperlink
                         video_hyperlinks.append('https://www.youtube.com/watch?v=B_OhHIja95g')
-        #video hyperlinks comes in order
-        #images don't come in order 
-        print(f"video_hyperlinks", video_hyperlinks)
-        for idx,uri in enumerate(video_hyperlinks):
-           print(f'Index: {idx}, URI: {uri}') 
         #------Images------#
         image_paths = []
         inner_array = []

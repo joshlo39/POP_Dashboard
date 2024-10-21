@@ -15,7 +15,7 @@ from PIL import Image
 from googleapiclient.http import MediaFileUpload
 import pyrebase
 from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import letter,landscape
 from PyPDF2 import PdfReader, PdfWriter
 from reportlab.lib.colors import red  
 import fitz #PyMuPdf
@@ -182,7 +182,137 @@ def create_pdf_with_2x2_images_hyperlinks_small_hyperlink(output_pdf_path, image
         if page_idx < len(image_details) - 1:
             c.showPage()
 
-    c.save()   
+    c.save()
+
+def create_pdf_two_questions_per_page(output_pdf_path, image_details, max_image_width=306, max_image_height=396,scale_increase=2.0):
+    c = canvas.Canvas(output_pdf_path, pagesize=letter)
+    page_width, page_height = letter
+
+    for page_idx, page_content in enumerate(image_details):
+        for image_idx, (image_path, hyperlink) in enumerate(page_content[:2]):  # Limit to 2 images per page
+            # Open and resize the image
+            try:
+                img = Image.open(image_path)
+            except:
+                print(f"Error opening image {image_path}")
+                os.remove(image_path)
+
+            img_width, img_height = img.size
+            scale = min(max_image_width / img_width, max_image_height / img_height)
+            scale *= scale_increase  # Increase the scale for two images per page
+            img_width *= scale
+            img_height *= scale
+
+            # Set the y position: Top image starts at the top (y=page_height), and bottom image starts just below it
+            if image_idx == 0:
+                # Top half of the page (image positioned starting at the top)
+                y = page_height - img_height  # Image starts at the top of the page
+            else:
+                # Bottom half of the page (image positioned just below the first image)
+                y = page_height / 2 - img_height  # Image starts just below the mid-point of the page
+
+            # Center the image horizontally
+            x = (page_width - img_width) / 2
+
+            # Add the image
+            c.drawImage(image_path, x, y, width=img_width, height=img_height)
+
+            # Add the hyperlink
+            link_text, link_url = hyperlink
+            text = c.beginText(x, y - 20)  # Adjust the y-coordinate for the hyperlink
+            text.setFont("Helvetica", 14)
+            text.setFillColor(red)
+            text.textLine(link_text)
+            c.drawText(text)
+            c.linkURL(link_url, (x, y - 20, x + img_width, y), relative=0)
+
+        # Create a new page if not the last question
+        if page_idx < len(image_details) - 1:
+            c.showPage()
+
+    c.save()
+def create_pdf_one_question_per_page_landscape(output_pdf_path, image_details, max_image_width=792, max_image_height=612,scale_increase=1.1):
+    # Landscape orientation for a letter-sized page
+    c = canvas.Canvas(output_pdf_path, pagesize=landscape(letter))
+    page_width, page_height = landscape(letter)  # Get the dimensions of the page in landscape mode
+
+    for page_idx, page_content in enumerate(image_details):
+        for image_idx, (image_path, hyperlink) in enumerate(page_content):
+            # Open and resize the image
+            try:
+                img = Image.open(image_path)
+            except:
+                print(f"Error opening image {image_path}")
+                os.remove(image_path)
+                continue
+
+            img_width, img_height = img.size
+            scale = min(max_image_width / img_width, max_image_height / img_height)
+
+            # Scale the image based on the smaller dimension
+            img_width *= scale
+            img_height *= scale
+
+            # Center the image on the page (horizontally and vertically)
+            x = (page_width - img_width) / 2
+            y = (page_height - img_height) / 2
+
+            # Add the image
+            c.drawImage(image_path, x, y, width=img_width, height=img_height)
+
+            # Add the hyperlink below the image
+            link_text, link_url = hyperlink
+            text = c.beginText(x, y - 20)  # Adjust the y-coordinate for the hyperlink
+            text.setFont("Helvetica", 14)
+            text.setFillColor(red)
+            text.textLine(link_text)
+            c.drawText(text)
+            c.linkURL(link_url, (x, y - 20, x + img_width, y), relative=0)
+
+        # Create a new page if not the last question
+            c.showPage()
+
+    c.save()
+def create_pdf_one_question_per_page(output_pdf_path, image_details, max_image_width=306, max_image_height=396,scale_increase=2.0):
+    print("Creating pdf with one question per page!!!!")
+    c = canvas.Canvas(output_pdf_path, pagesize=letter)
+    page_width, page_height = letter
+
+    for page_idx, page_content in enumerate(image_details):
+        for image_idx, (image_path, hyperlink) in enumerate(page_content):
+            # Open and resize the image
+            try:
+                img = Image.open(image_path)
+            except:
+                print(f"Error opening image {image_path}")
+                os.remove(image_path)
+
+            img_width, img_height = img.size
+            scale = min(max_image_width / img_width, max_image_height / img_height)
+            scale *= scale_increase  # Increase the scale for two images per page
+            img_width *= scale
+            img_height *= scale
+
+            # Center the image in the middle of the page
+            x = (page_width - img_width) / 2
+            y = (page_height - img_height) / 2
+
+            # Add the image
+            c.drawImage(image_path, x, y, width=img_width, height=img_height)
+
+            # Add the hyperlink
+            link_text, link_url = hyperlink
+            text = c.beginText(x, y - 20)  # Adjust the y-coordinate for the hyperlink
+            text.setFont("Helvetica", 14)
+            text.setFillColor(red)
+            text.textLine(link_text)
+            c.drawText(text)
+            c.linkURL(link_url, (x, y - 20, x + img_width, y), relative=0)
+
+        # Create a new page if not the last question
+            c.showPage()
+
+    c.save()
 
 def merge_pdfs(base_pdf_path, overlay_pdf_path, output_pdf_path):
     # Open the base PDF
