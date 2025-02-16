@@ -125,7 +125,6 @@ def pdf_merger():
     filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
 
     #store the values into individual array
-    print(f"Filtered Dataset: {filtered_dataset['valueRanges'][7]['values']}")
     category_values = filtered_dataset['valueRanges'][0]['values']
     difficulty_values = filtered_dataset['valueRanges'][1]['values']
     section_values = filtered_dataset['valueRanges'][2]['values']
@@ -191,18 +190,34 @@ def pdf_merger():
                 idx += 1
                 
         os.makedirs(save_dir, exist_ok=True)
-        
-        # Download images
         for idx, url in enumerate(hyperlinks):
             try:
                 if 'drive.google.com' in url:
-                    file_id = url.split('/')[-2]
+                    file_id = extract_drive_file_id(url)
+                    if not file_id:
+                        print(f"Failed to extract file ID from URL: {url}")
+                        continue  # Skip this URL
+
                     file_path = os.path.join(save_dir, f'image_{idx + 1}.png')
                     download_drive_file(drive_service, file_id, file_path)
                 else:
                     print(f"Failed to download or invalid content type for URL: {url}")
             except Exception as e:
                 print(f"Request failed for URL {url}: {e}")
+
+
+        
+        # # Download images
+        # for idx, url in enumerate(hyperlinks):
+        #     try:
+        #         if 'drive.google.com' in url:
+        #             file_id = url.split('/')[-2]
+        #             file_path = os.path.join(save_dir, f'image_{idx + 1}.png')
+        #             download_drive_file(drive_service, file_id, file_path)
+        #         else:
+        #             print(f"Failed to download or invalid content type for URL: {url}")
+        #     except Exception as e:
+        #         print(f"Request failed for URL {url}: {e}")
                 
         
         images = []
@@ -228,7 +243,6 @@ def pdf_merger():
 
         for idx, filename in enumerate(file_names):
             if filename.endswith(".png"):
-                print(f"Index: {idx}, Filename: {filename}, URI: {get_rick_rolled}")
                 filepath = os.path.join(save_dir, filename)
 
                 inner_array.append((filepath, (f" ", get_rick_rolled)))
@@ -347,7 +361,6 @@ def pdf_merger():
         inner_array = []
         
         file_names = [f for f in os.listdir(save_dir) if f != 'random.txt'] 
-        print(f"File Names: {file_names}")
         file_names.sort(key = lambda x: int(x.split('_')[1].split('.')[0]))
         for idx, filename in enumerate(file_names):
             if filename.endswith(".png"):
@@ -360,10 +373,6 @@ def pdf_merger():
         #if there is a non-full page of images, then append it to the end of the outer array
         if inner_array:
             image_paths.append(inner_array)
-        for idx,page in enumerate(image_paths):
-            print(f"Page Index:{idx}")
-            for image in page:
-                print(f"Image Tuple: {image}")
         if len(video_hyperlinks) > 0:
             create_pdf_with_2x2_images_hyperlinks('downloaded_pngs/merged.pdf', image_paths )
         else:

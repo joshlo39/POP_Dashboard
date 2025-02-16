@@ -67,14 +67,35 @@ def update_sheet_cell(service, spreadsheet_id, range_name, value):
         valueInputOption='USER_ENTERED', body=body).execute()
     return result
 
-def download_drive_file(service, file_id, save_path):
+
+def extract_drive_file_id(url):
+    match = re.search(r'(?:id=|/d/|/uc\?id=)([\w-]+)', url)
+    return match.group(1) if match else None
+
+
+def download_drive_file(service, file_id_or_url, save_path):
+    # Extract file ID if a URL is passed
+    file_id = extract_drive_file_id(file_id_or_url) if "drive.google.com" in file_id_or_url else file_id_or_url
+
+    try:
         request = service.files().get_media(fileId=file_id)
-        file = io.BytesIO()
         with open(save_path, 'wb') as fh:
             downloader = MediaIoBaseDownload(fh, request)
             done = False
-            while done is False:
+            while not done:
                 status, done = downloader.next_chunk()
+                print(f"Download {int(status.progress() * 100)}% complete")
+    except Exception as e:
+        print(f"Error downloading file {file_id}: {e}")
+
+# def download_drive_file(service, file_id, save_path):
+#         request = service.files().get_media(fileId=file_id)
+#         file = io.BytesIO()
+#         with open(save_path, 'wb') as fh:
+#             downloader = MediaIoBaseDownload(fh, request)
+#             done = False
+#             while done is False:
+#                 status, done = downloader.next_chunk()
 
 def smart_sort(arr):
     arr.sort(key=lambda x: int(x.split('-')[0]))
@@ -152,10 +173,14 @@ def create_pdf_with_2x2_images_hyperlinks_small_hyperlink(output_pdf_path, image
             # Open and resize the image
             try:
                 img = Image.open(image_path)
+                img.verify()
+                print(f"Image {image_path} is valid")
             except:
                 print(f"Error opening image {image_path}")
                 os.remove(image_path)
 
+            if not os.access(image_path, os.R_OK):
+                print(f"Permission denied: {image_path}")
             img_width, img_height = img.size
             
             scale = min(max_image_width / img_width,max_image_height / img_height)
@@ -165,8 +190,13 @@ def create_pdf_with_2x2_images_hyperlinks_small_hyperlink(output_pdf_path, image
             # Adjust position to center the image in its quadrant
             x += (max_image_width - img_width) / 2
             y += (max_image_height - img_height) / 2
+            
+            if not os.path.exists(save_dir):
+                print("FIle path does not exist")
+            else:
+                print("File path exists")
 
-            # Add the image
+           # Add the image
             c.drawImage(image_path, x, y, width=img_width, height=img_height)
 
             # Add the hyperlink
