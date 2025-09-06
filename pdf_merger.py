@@ -71,7 +71,7 @@ def pdf_merger():
 
     sheet_name = range_name.split("!")[0]
     category_range = sheet_name + "!" + "K" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "K" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
-    difficulty_range = sheet_name + "!" + "I" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "I" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
+    difficulty_range = sheet_name + "!" + "H" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "H" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     section_range = sheet_name + "!" + "B" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "B" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     correctness_range = sheet_name + "!" + "D" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "D" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
     test_range = sheet_name + "!" + "A" + (range_name.split("!")[1].split(":")[0].split()[0][1:]) + ":" + "A" + (range_name.split("!")[1].split(":")[1].split()[0][1:])
@@ -125,11 +125,11 @@ def pdf_merger():
     filtered_dataset = sheets_service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_list).execute()
 
     #store the values into individual array
-    category_values = filtered_dataset['valueRanges'][0]['values']
+    category_values = filtered_dataset['valueRanges'][0].get('values') or ["NA"]
     difficulty_values = filtered_dataset['valueRanges'][1].get('values') or ["NA"]
-    section_values = filtered_dataset['valueRanges'][2]['values']
-    correctness_values = filtered_dataset['valueRanges'][3]['values']
-    test_values = filtered_dataset['valueRanges'][4]['values']
+    section_values = filtered_dataset['valueRanges'][2].get('values') or ["NA"]
+    correctness_values = filtered_dataset['valueRanges'][3].get('values') or ["NA"]
+    test_values = filtered_dataset['valueRanges'][4].get('values') or ["NA"]
     sub_category_one_values = filtered_dataset['valueRanges'][7].get('values') or ["NA"]
     sub_category_two_values = filtered_dataset['valueRanges'][8].get('values') or ["NA"]
     sub_category_three_values = filtered_dataset['valueRanges'][9].get('values') or ["NA"]
