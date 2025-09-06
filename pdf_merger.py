@@ -126,14 +126,14 @@ def pdf_merger():
 
     #store the values into individual array
     category_values = filtered_dataset['valueRanges'][0]['values']
-    difficulty_values = filtered_dataset['valueRanges'][1]['values']
+    difficulty_values = filtered_dataset['valueRanges'][1].get('values') or ["NA"]
     section_values = filtered_dataset['valueRanges'][2]['values']
     correctness_values = filtered_dataset['valueRanges'][3]['values']
     test_values = filtered_dataset['valueRanges'][4]['values']
-    sub_category_one_values = filtered_dataset['valueRanges'][7]['values']
-    sub_category_two_values = filtered_dataset['valueRanges'][8]['values'] 
-    sub_category_three_values = filtered_dataset['valueRanges'][9]['values']
-    calculator_values = filtered_dataset['valueRanges'][10]['values']
+    sub_category_one_values = filtered_dataset['valueRanges'][7].get('values') or ["NA"]
+    sub_category_two_values = filtered_dataset['valueRanges'][8].get('values') or ["NA"]
+    sub_category_three_values = filtered_dataset['valueRanges'][9].get('values') or ["NA"]
+    calculator_values = filtered_dataset['valueRanges'][10].get('values') or ["NA"]
 
     # Flags to check if filters are active
     is_category_filter = len(selected_category) > 0
@@ -169,7 +169,7 @@ def pdf_merger():
                 #the logic is if the filter is not active then reurns true for that particular filter
                     if 'hyperlink' in cell:
                         video_hyperlinks.append(cell['hyperlink'])     
-        
+        print(selected_difficulty)
         idx = 0 # Index of the current cell
         for number_of_rows, row in enumerate(download_result['sheets'][0]['data'][0]['rowData']):
             for num_of_row_values, cell in enumerate((row['values'])):
